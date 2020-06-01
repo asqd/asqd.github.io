@@ -1,0 +1,206 @@
+<html>
+
+<head>
+  <meta property="og:image" content="https://asqd.github.io/public/simple_tab_editor.png" itemprop="thumbnailUrl">
+  <meta property="og:title" content="Simple Guitar Tab Editor">
+  <meta property="og:url" content="asqd.github.io/guitar_tab_editor">
+  <meta property="og:site_name" content="Simple Guitar Tab Editor | asqd">
+  <meta property="og:description" content="Simple Guitar Tab Editor">
+  <style>
+    body {
+      max-width: 640px;
+      margin: 3em auto;
+      padding: 2em;
+
+      font-family: monospace;
+    }
+
+    ul {
+      margin: 0.5em;
+      padding: 1em;
+    }
+
+    .btn-group {
+      margin-bottom: 0.5em;
+    }
+
+    button {
+      border: 1px solid #808080;
+      border-radius: 3px;
+      padding: 0.3em 0.5em;
+      background: #848484;
+      -webkit-transition-duration: 0.4s;
+      transition-duration: 0.4s;
+      color: white;
+    }
+
+    button:hover {
+      background: white;
+      color: black;
+    }
+
+    a {
+      -webkit-transition-duration: 0.4s;
+      transition-duration: 0.4s;
+      color: #848484;
+      text-decoration: none;
+
+    }
+
+    a:hover {
+      background: #848484;
+      color: white;
+      padding: 0.1em 0.3em;
+    }
+
+    .tab {
+      white-space: pre;
+      position: relative;
+    }
+
+    .tab input {
+      width: 1em;
+      height: 1em;
+      outline: none;
+    }
+
+    .tab span {
+      cursor: pointer;
+    }
+
+    .credits {
+      margin-right: 2em;
+      float: right;
+    }
+
+    footer {
+      width: 100%;
+      display: inline-block;
+      margin-top: 2em;
+      height: 20px;
+    }
+  </style>
+  <title>
+    Simple Guitar Tab Generator by asqd
+  </title>
+</head>
+
+<body>
+
+  <h2 class="name">Simple Guitar Tab Editor</h2>
+  <ul>
+    <li>Click on '-' or 'num' to edit</li>
+    <li>Drag 'nums' to move</li>
+  </ul>
+  <div class="btn-group">
+    <button class='add-row'>Add Row</button>
+    <button class='clear'>Clear</button>
+    <button class='download'>Download</button>
+  </div>
+  <div class='tab'></div>
+  <footer>
+    <center>made by <a href="https://github.com/asqd">asqd<a href="https://github.com/CatTheMagician"></a> from <a
+          href="https://github.com/CatTheMagician">Cat the Magician</a></center>
+  </footer>
+</body>
+
+<script>
+  const DEFAULT_TEMPLATE = `
+e|------------------|------------------|------------------|------------------|
+B|-5--4-5-----------|------------------|-5--4-5-----------|------------------|
+G|--------4-7-5-----|-----4----5-4-----|--------4-7-5-----|-----4----5-4-----|
+D|--------------7---|---7----------7---|--------------7---|---7----------7---|
+A|------------------|-7----------------|------------------|-7----------------|
+E|------------------|------------------|------------------|------------------|
+
+e|-------------------------------------|------------------|------------------|
+B|--------5----6-5-----5---------------|-5--4-5-----------|------------------|
+G|--4-5-7----------7-----7-5----7--5-4-|--------4-7-5-----|-----4----5-4-----|
+D|-------------------------------------|--------------7---|---7----------7---|
+A|-------------------------------------|------------------|-7----------------|
+E|-------------------------------------|------------------|------------------|
+`
+
+  const TEMPLATE = `
+e|---------------------------------------------------------------------------|
+B|---------------------------------------------------------------------------|
+G|---------------------------------------------------------------------------|
+D|---------------------------------------------------------------------------|
+A|---------------------------------------------------------------------------|
+E|---------------------------------------------------------------------------|
+`
+
+  var $tab = document.querySelector(".tab")
+
+  function addRow(template) {
+    var html = prepareTemplate(template)
+    $tab.innerHTML += html
+
+    var spans = document.querySelectorAll("span")
+    var isMoving = false
+    var $dragging
+    Array.prototype.forEach.call(spans, span => {
+      span.addEventListener("mousedown", e => {
+        e.preventDefault()
+        isMoving = true
+        $dragging = e.target
+      })
+      span.addEventListener("mouseup", e => {
+        isMoving = false
+      })
+      span.addEventListener("click", e => {
+        if (!e.target.classList.contains('is-editable')) return
+
+        html = e.target.innerHTML
+        e.target.innerHTML = "<input>"
+        var input = e.target.querySelector("input")
+        if (html != "-") input.value = html
+        input.focus()
+        input.addEventListener("blur", ee => {
+          var value = ee.target.value != "" ? ee.target.value : "-"
+          e.target.innerHTML = `${value}`
+        })
+      })
+    })
+
+    document.body.addEventListener("mousemove", e => {
+      if (isMoving && e.target.classList.contains('is-editable')) {
+        var old_value = $dragging.innerHTML
+        var new_value = e.target.innerHTML
+        $dragging.innerHTML = new_value
+        e.target.innerHTML = old_value
+        $dragging = e.target
+      }
+    })
+  }
+
+  function prepareTemplate(template) {
+    return template.split("").map(e => {
+      if (e === "-" || e.match(/[0-9+]/))
+        return `<span class='is-editable'>${e}</span>`
+      return `<span>${e}</span>`
+    }).join("")
+  }
+
+  function clear() {
+    $tab.innerHTML = prepareTemplate(TEMPLATE)
+  }
+
+  function download() {
+    var element = document.createElement('a')
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent($tab.innerText))
+    element.setAttribute('download', "tab.txt")
+    element.style.display = 'none'
+    document.body.appendChild(element)
+    element.click()
+    document.body.removeChild(element)
+  }
+
+  addRow(DEFAULT_TEMPLATE)
+  document.querySelector(".clear").addEventListener("click", clear)
+  document.querySelector(".add-row").addEventListener("click", e => addRow(TEMPLATE))
+  document.querySelector(".download").addEventListener("click", e => download())
+
+</script>
+
+</html>
