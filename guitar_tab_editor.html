@@ -8,11 +8,16 @@
   <meta property="og:description" content="Simple Guitar Tab Editor">
   <style>
     body {
-      max-width: 640px;
+      max-width: 940px;
       margin: 3em auto;
       padding: 2em;
 
       font-family: monospace;
+    }
+
+    .container {
+      max-width: 640px;
+      float: left;
     }
 
     ul {
@@ -22,6 +27,22 @@
 
     .btn-group {
       margin-bottom: 0.5em;
+    }
+
+    .tips {
+      display: block;
+      float: right;
+      position: relative;
+      width: 300px;
+      top: 15px;
+    }
+
+    .tips th {
+      text-align: left;
+    }
+
+    .tips th, .tips td {
+      padding: 5px 10px;
     }
 
     button {
@@ -59,8 +80,8 @@
     }
 
     .tab input {
-      width: 1em;
-      height: 1em;
+      width: 24px;
+      height: 24px;
       outline: none;
     }
 
@@ -86,22 +107,167 @@
 </head>
 
 <body>
+  <div class="container">
+    <h2 class="name">Simple Guitar Tab Editor</h2>
+    <ul>
+      <li>Click on '-' or 'num' to edit</li>
+      <li>Drag 'nums' to move</li>
+    </ul>
+    <div class="btn-group">
+      <button class='add-row'>Add Row</button>
+      <button class='clear'>Clear</button>
+      <button class='download'>Download</button>
+      <button class='help'>Show tips</button>
+    </div>
+    <div class='tab'></div>
 
-  <h2 class="name">Simple Guitar Tab Editor</h2>
-  <ul>
-    <li>Click on '-' or 'num' to edit</li>
-    <li>Drag 'nums' to move</li>
-  </ul>
-  <div class="btn-group">
-    <button class='add-row'>Add Row</button>
-    <button class='clear'>Clear</button>
-    <button class='download'>Download</button>
+    <footer>
+      <center>made by <a href="https://github.com/asqd">asqd<a href="https://github.com/CatTheMagician"></a> from <a
+            href="https://github.com/CatTheMagician">Cat the Magician</a></center>
+    </footer>
   </div>
-  <div class='tab'></div>
-  <footer>
-    <center>made by <a href="https://github.com/asqd">asqd<a href="https://github.com/CatTheMagician"></a> from <a
-          href="https://github.com/CatTheMagician">Cat the Magician</a></center>
-  </footer>
+  <div class="tips" style="display: none;">
+
+    <table class="wikitable">
+      <tbody>
+        <tr>
+          <th>Symbol</th>
+          <th>Technique
+          </th>
+        </tr>
+        <tr>
+          <td>h</td>
+          <td><a href="/wiki/Hammer_on" class="mw-redirect" title="Hammer on">hammer on</a>
+          </td>
+        </tr>
+        <tr>
+          <td>p</td>
+          <td><a href="/wiki/Pull_off" class="mw-redirect" title="Pull off">pull off</a>
+          </td>
+        </tr>
+        <tr>
+          <td>b</td>
+          <td>bend string up
+          </td>
+        </tr>
+        <tr>
+          <td>r</td>
+          <td>release bend
+          </td>
+        </tr>
+        <tr>
+          <td>/</td>
+          <td>slide up
+          </td>
+        </tr>
+        <tr>
+          <td>\</td>
+          <td>slide down
+          </td>
+        </tr>
+        <tr>
+          <td>v</td>
+          <td><a href="/wiki/Vibrato" title="Vibrato">vibrato</a> (sometimes written as ~)
+          </td>
+        </tr>
+        <tr>
+          <td>t</td>
+          <td>right hand <a href="/wiki/Tapping" title="Tapping">tap</a>
+          </td>
+        </tr>
+        <tr>
+          <td>s</td>
+          <td>legato slide
+          </td>
+        </tr>
+        <tr>
+          <td>S</td>
+          <td>shift slide
+          </td>
+        </tr>
+        <tr>
+          <td>*</td>
+          <td>natural <a href="/wiki/Harmonic" title="Harmonic">harmonic</a>
+          </td>
+        </tr>
+        <tr>
+          <td>[n]</td>
+          <td>artificial harmonic
+          </td>
+        </tr>
+        <tr>
+          <td>n(n)</td>
+          <td>tapped harmonic
+          </td>
+        </tr>
+        <tr>
+          <td>tr</td>
+          <td>trill
+          </td>
+        </tr>
+        <tr>
+          <td>T</td>
+          <td>tap
+          </td>
+        </tr>
+        <tr>
+          <td>TP</td>
+          <td><a href="/wiki/Tremolo_picking" class="mw-redirect" title="Tremolo picking">tremolo picking</a>
+          </td>
+        </tr>
+        <tr>
+          <td>PM</td>
+          <td><a href="/wiki/Palm_muting" class="mw-redirect" title="Palm muting">palm muting</a> (also written as _)
+          </td>
+        </tr>
+        <tr>
+          <td>\n/</td>
+          <td><a href="/wiki/Tremolo_arm" class="mw-redirect" title="Tremolo arm">tremolo arm</a> dip; n = amount to dip
+          </td>
+        </tr>
+        <tr>
+          <td>\n</td>
+          <td>tremolo arm down
+          </td>
+        </tr>
+        <tr>
+          <td>n/</td>
+          <td>tremolo arm up
+          </td>
+        </tr>
+        <tr>
+          <td>/n\</td>
+          <td>tremolo arm inverted dip
+          </td>
+        </tr>
+        <tr>
+          <td>=</td>
+          <td>hold bend; also acts as connecting device for hammers/pulls
+          </td>
+        </tr>
+        <tr>
+          <td>&lt;&gt;</td>
+          <td><a href="/wiki/Volume_swell" title="Volume swell">volume swell</a> (louder/softer)
+          </td>
+        </tr>
+        <tr>
+          <td>x</td>
+          <td>on rhythm slash represents muted slash
+          </td>
+        </tr>
+        <tr>
+          <td>o</td>
+          <td>on rhythm slash represents single note slash
+          </td>
+        </tr>
+        <tr>
+          <td>·/.</td>
+          <td><a href="/wiki/Pick_slide" title="Pick slide">pick slide</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </body>
 
 <script>
@@ -183,7 +349,8 @@ E|---------------------------------------------------------------------------|
   }
 
   function clear() {
-    $tab.innerHTML = prepareTemplate(TEMPLATE)
+    $tab.innerHTML = ""
+    addRow(TEMPLATE)
   }
 
   function download() {
@@ -196,7 +363,18 @@ E|---------------------------------------------------------------------------|
     document.body.removeChild(element)
   }
 
+  function toggleVisibility(classname) {
+    element = document.querySelector("." + classname)
+    if (element.style.display === "none") {
+      element.style.display = "block"
+    }
+    else {
+      element.style.display = "none"
+    }
+  }
+
   addRow(DEFAULT_TEMPLATE)
+  document.querySelector(".help").addEventListener("click", e => toggleVisibility("tips"))
   document.querySelector(".clear").addEventListener("click", clear)
   document.querySelector(".add-row").addEventListener("click", e => addRow(TEMPLATE))
   document.querySelector(".download").addEventListener("click", e => download())
