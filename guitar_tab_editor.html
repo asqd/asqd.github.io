@@ -25,11 +25,16 @@
       padding: 1em;
     }
 
+    li {
+      margin: 5px;
+    }
+
     .btn-group {
       margin-bottom: 0.5em;
     }
 
     .tips {
+      background: rgba(255, 255, 255, 0.95);
       display: block;
       float: right;
       position: relative;
@@ -81,8 +86,8 @@
     }
 
     .tab input {
-      width: 24px;
-      height: 24px;
+      width: 18px;
+      height: 18px;
       outline: none;
     }
 
@@ -162,6 +167,8 @@
     <h2 class="name">Simple Guitar Tab Editor</h2>
     <ul>
       <li>Click on '-' or 'num' to edit</li>
+      <li>Use arrow keys to navigate between strings or Tab key to jump right until input active</li>
+      <li>Use arrow keys to navigate between string</li>
       <li>Drag 'nums' to move</li>
     </ul>
     <div class="btn-group">
@@ -173,7 +180,8 @@
     <div class='tab'></div>
 
     <footer>
-      <center>made by <a href="https://github.com/asqd" target="_blank">asqd</a> from <a href="https://github.com/CatTheMagician" target="_blank">Cat the Magician</a></center>
+      <center>made by <a href="https://github.com/asqd" target="_blank">asqd</a> from <a
+          href="https://github.com/CatTheMagician" target="_blank">Cat the Magician</a></center>
     </footer>
   </div>
   <div class="tips" style="display: none;">
@@ -300,7 +308,8 @@
         </tr>
         <tr>
           <td>&lt;&gt;</td>
-          <td><a href="https://en.m.wikipedia.org/wiki/Volume_swell" title="Volume swell">volume swell</a> (louder/softer)
+          <td><a href="https://en.m.wikipedia.org/wiki/Volume_swell" title="Volume swell">volume swell</a>
+            (louder/softer)
           </td>
         </tr>
         <tr>
@@ -379,7 +388,7 @@ E|---------------------------------------------------------------------------|
         if (!e.target.classList.contains('is-editable')) return
 
         html = e.target.innerHTML
-        e.target.innerHTML = "<input maxlength='2' max='27'>"
+        e.target.innerHTML = "<input maxlength='1'>"
         var input = e.target.querySelector("input")
         if (html != "-") input.value = html
         input.focus()
@@ -391,11 +400,61 @@ E|---------------------------------------------------------------------------|
         input.addEventListener("keyup", (ee) => {
           if (ee.which == 13) input.blur()
         })
+
+        input.addEventListener("keydown", (ee) => {
+          let rowsNum = 77
+          let nodeList = document.querySelectorAll(".tab span.is-editable")
+          let rowCount = nodeList.length / rowsNum / 6
+          let index = Array.from(nodeList).indexOf(e.target)
+          let rem = (index - index % rowsNum) / rowsNum
+          let mod = index % rowsNum
+
+          switch (ee.key) {
+            case "Tab":
+              ee.preventDefault();
+              e.target.nextElementSibling.click()
+              input.blur()
+              return false
+            case 'ArrowLeft':
+              if (index > -1 && (index % rowsNum) > 1) {
+                e.target.previousElementSibling.click()
+                input.blur()
+              } else {
+                nodeList[index + 75].click()
+                input.blur()
+              }
+              return false
+            case 'ArrowUp':
+              if (rem > 0) {
+                nodeList[index - rowsNum].click()
+                input.blur()
+              } else {
+                nodeList[nodeList.length - (rowsNum - index % rowsNum)].click()
+                input.blur()
+              }
+              return false
+            case 'ArrowRight':
+              if (index > -1 && (index % rowsNum) < 76) {
+                e.target.nextElementSibling.click()
+                input.blur()
+              } else {
+                nodeList[index - 75].click()
+                input.blur()
+              }
+              return false
+            case 'ArrowDown':
+              if (rem < (nodeList.length / rowsNum - 1)) {
+                nodeList[index + rowsNum].click()
+                input.blur()
+              } else {
+                nodeList[index % rowsNum].click()
+                input.blur()
+              }
+              return false
+          }
+        })
       })
-
-
     })
-
     document.body.addEventListener("mousemove", e => {
       if (isMoving && e.target.classList.contains('is-editable')) {
         var old_value = $dragging.innerHTML
