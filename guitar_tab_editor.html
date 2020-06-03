@@ -41,7 +41,8 @@
       text-align: left;
     }
 
-    .tips th, .tips td {
+    .tips th,
+    .tips td {
       padding: 5px 10px;
     }
 
@@ -100,6 +101,56 @@
       margin-top: 2em;
       height: 20px;
     }
+
+    .modal {
+      display: none;
+      /* Hidden by default */
+      position: fixed;
+      /* Stay in place */
+      z-index: 1;
+      /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%;
+      /* Full width */
+      height: 100%;
+      /* Full height */
+      overflow: auto;
+      /* Enable scroll if needed */
+      background-color: rgb(0, 0, 0);
+      /* Fallback color */
+      background-color: rgba(0, 0, 0, 0.4);
+      /* Black w/ opacity */
+      margin: 0 auto;
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      height: 90%;
+    }
+
+    .remote-content {
+      width: 100%;
+      height: 97%;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
   </style>
   <title>
     Simple Guitar Tab Generator by asqd
@@ -122,8 +173,7 @@
     <div class='tab'></div>
 
     <footer>
-      <center>made by <a href="https://github.com/asqd">asqd<a href="https://github.com/CatTheMagician"></a> from <a
-            href="https://github.com/CatTheMagician">Cat the Magician</a></center>
+      <center>made by <a href="https://github.com/asqd" target="_blank">asqd</a> from <a href="https://github.com/CatTheMagician" target="_blank">Cat the Magician</a></center>
     </footer>
   </div>
   <div class="tips" style="display: none;">
@@ -137,12 +187,12 @@
         </tr>
         <tr>
           <td>h</td>
-          <td><a href="/wiki/Hammer_on" class="mw-redirect" title="Hammer on">hammer on</a>
+          <td><a href="https://en.m.wikipedia.org/wiki/Hammer_on" class="mw-redirect" title="Hammer on">hammer on</a>
           </td>
         </tr>
         <tr>
           <td>p</td>
-          <td><a href="/wiki/Pull_off" class="mw-redirect" title="Pull off">pull off</a>
+          <td><a href="https://en.m.wikipedia.org/wiki/Pull_off" class="mw-redirect" title="Pull off">pull off</a>
           </td>
         </tr>
         <tr>
@@ -167,12 +217,12 @@
         </tr>
         <tr>
           <td>v</td>
-          <td><a href="/wiki/Vibrato" title="Vibrato">vibrato</a> (sometimes written as ~)
+          <td><a href="https://en.m.wikipedia.org/wiki/Vibrato" title="Vibrato">vibrato</a> (sometimes written as ~)
           </td>
         </tr>
         <tr>
           <td>t</td>
-          <td>right hand <a href="/wiki/Tapping" title="Tapping">tap</a>
+          <td>right hand <a href="https://en.m.wikipedia.org/wiki/Tapping" title="Tapping">tap</a>
           </td>
         </tr>
         <tr>
@@ -187,7 +237,7 @@
         </tr>
         <tr>
           <td>*</td>
-          <td>natural <a href="/wiki/Harmonic" title="Harmonic">harmonic</a>
+          <td>natural <a href="https://en.m.wikipedia.org/wiki/Harmonic" title="Harmonic">harmonic</a>
           </td>
         </tr>
         <tr>
@@ -212,17 +262,20 @@
         </tr>
         <tr>
           <td>TP</td>
-          <td><a href="/wiki/Tremolo_picking" class="mw-redirect" title="Tremolo picking">tremolo picking</a>
+          <td><a href="https://en.m.wikipedia.org/wiki/Tremolo_picking" class="mw-redirect"
+              title="Tremolo picking">tremolo picking</a>
           </td>
         </tr>
         <tr>
           <td>PM</td>
-          <td><a href="/wiki/Palm_muting" class="mw-redirect" title="Palm muting">palm muting</a> (also written as _)
+          <td><a href="https://en.m.wikipedia.org/wiki/Palm_muting" class="mw-redirect" title="Palm muting">palm
+              muting</a> (also written as _)
           </td>
         </tr>
         <tr>
           <td>\n/</td>
-          <td><a href="/wiki/Tremolo_arm" class="mw-redirect" title="Tremolo arm">tremolo arm</a> dip; n = amount to dip
+          <td><a href="https://en.m.wikipedia.org/wiki/Tremolo_arm" class="mw-redirect" title="Tremolo arm">tremolo
+              arm</a> dip; n = amount to dip
           </td>
         </tr>
         <tr>
@@ -247,7 +300,7 @@
         </tr>
         <tr>
           <td>&lt;&gt;</td>
-          <td><a href="/wiki/Volume_swell" title="Volume swell">volume swell</a> (louder/softer)
+          <td><a href="https://en.m.wikipedia.org/wiki/Volume_swell" title="Volume swell">volume swell</a> (louder/softer)
           </td>
         </tr>
         <tr>
@@ -262,11 +315,18 @@
         </tr>
         <tr>
           <td>·/.</td>
-          <td><a href="/wiki/Pick_slide" title="Pick slide">pick slide</a>
+          <td><a href="https://en.m.wikipedia.org/wiki/Pick_slide" title="Pick slide">pick slide</a>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <div id="tips-modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <span class="content"></span>
+      </div>
+    </div>
   </div>
 </body>
 
@@ -305,7 +365,8 @@ E|---------------------------------------------------------------------------|
     var spans = document.querySelectorAll("span")
     var isMoving = false
     var $dragging
-    Array.prototype.forEach.call(spans, span => {
+
+    spans.forEach(span => {
       span.addEventListener("mousedown", e => {
         e.preventDefault()
         isMoving = true
@@ -318,7 +379,7 @@ E|---------------------------------------------------------------------------|
         if (!e.target.classList.contains('is-editable')) return
 
         html = e.target.innerHTML
-        e.target.innerHTML = "<input>"
+        e.target.innerHTML = "<input maxlength='2' max='27'>"
         var input = e.target.querySelector("input")
         if (html != "-") input.value = html
         input.focus()
@@ -326,7 +387,13 @@ E|---------------------------------------------------------------------------|
           var value = ee.target.value != "" ? ee.target.value : "-"
           e.target.innerHTML = `${value}`
         })
+
+        input.addEventListener("keyup", (ee) => {
+          if (ee.which == 13) input.blur()
+        })
       })
+
+
     })
 
     document.body.addEventListener("mousemove", e => {
@@ -342,7 +409,7 @@ E|---------------------------------------------------------------------------|
 
   function prepareTemplate(template) {
     return template.split("").map(e => {
-      if (e === "-" || e.match(/[0-9+]/))
+      if (e === "-" || e.match(/[0-9+]/) || e === "|")
         return `<span class='is-editable'>${e}</span>`
       return `<span>${e}</span>`
     }).join("")
@@ -371,6 +438,26 @@ E|---------------------------------------------------------------------------|
     else {
       element.style.display = "none"
     }
+  }
+
+  links = document.querySelectorAll("table a")
+
+  links.forEach((link) => {
+    link.addEventListener("click", e => {
+      e.preventDefault()
+
+      modal = document.getElementById("tips-modal")
+      modal.style.display = "block"
+
+      modal.querySelector('.modal-content .content').innerHTML = '<object class="remote-content" type="text/html" data=' + link.href + '></object>'
+    })
+  })
+
+  document.querySelector("#tips-modal .close").addEventListener("click", e => toggleVisibility("modal#tips-modal"))
+
+  window.onclick = (event) => {
+    modal = document.getElementById("tips-modal")
+    if (event.target == modal) modal.style.display = "none"
   }
 
   addRow(DEFAULT_TEMPLATE)
