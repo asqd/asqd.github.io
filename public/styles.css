@@ -1,0 +1,149 @@
+body {
+  max-width: 940px;
+  margin: 3em auto;
+  padding: 2em;
+
+  font-family: monospace;
+}
+
+.container {
+  max-width: 640px;
+  float: left;
+}
+
+ul {
+  margin: 0.5em;
+  padding: 1em;
+}
+
+li {
+  margin: 5px;
+}
+
+.btn-group {
+  margin-bottom: 0.5em;
+}
+
+.tips {
+  background: rgba(255, 255, 255, 0.95);
+  display: block;
+  float: right;
+  position: relative;
+  width: 300px;
+  top: 15px;
+}
+
+.tips th {
+  text-align: left;
+}
+
+.tips th,
+.tips td {
+  padding: 5px 10px;
+}
+
+button {
+  border: 1px solid #808080;
+  border-radius: 3px;
+  padding: 0.3em 0.5em;
+  background: #848484;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  color: white;
+}
+
+button:hover {
+  background: white;
+  color: black;
+}
+
+a {
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  color: #848484;
+  text-decoration: none;
+
+}
+
+a:hover {
+  background: #848484;
+  color: white;
+  padding: 0.1em 0.3em;
+}
+
+.tab {
+  white-space: pre;
+  position: relative;
+}
+
+.tab input {
+  width: 18px;
+  height: 18px;
+  outline: none;
+}
+
+.tab span {
+  cursor: pointer;
+}
+
+.credits {
+  margin-right: 2em;
+  float: right;
+}
+
+footer {
+  width: 100%;
+  display: inline-block;
+  margin-top: 2em;
+  height: 20px;
+}
+
+.modal {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0);
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */
+  margin: 0 auto;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  height: 90%;
+}
+
+.remote-content {
+  width: 100%;
+  height: 97%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
