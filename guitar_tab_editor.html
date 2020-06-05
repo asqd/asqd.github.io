@@ -364,6 +364,11 @@ D|---------------------------------------------------------------------------|
 A|---------------------------------------------------------------------------|
 E|---------------------------------------------------------------------------|
 `
+  const PERMITTED_KEYS = [
+    "h", "p", "b", "r", "/", "\\", "v", "t", "s", "S", "*", "[", "n", "]",
+    "(", ")", "T", "P", "M", "=", "<", ">", "x", "o", "·", ".", "~", "-",
+    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
+  ]
 
   var $tab = document.querySelector(".tab")
 
@@ -397,11 +402,13 @@ E|---------------------------------------------------------------------------|
           e.target.innerHTML = `${value}`
         })
 
-        input.addEventListener("keyup", (ee) => {
-          if (ee.which == 13) input.blur()
-        })
-
         input.addEventListener("keydown", (ee) => {
+          pressedKey = ee.key
+
+          if (PERMITTED_KEYS.indexOf(pressedKey) > -1) {
+            ee.target.value = pressedKey
+          }
+
           let rowsNum = 77
           let nodeList = document.querySelectorAll(".tab span.is-editable")
           let rowCount = nodeList.length / rowsNum / 6
@@ -409,10 +416,22 @@ E|---------------------------------------------------------------------------|
           let rem = (index - index % rowsNum) / rowsNum
           let mod = index % rowsNum
 
-          switch (ee.key) {
+          if (ee.shiftKey && ee.key === "Tab") {
+            ee.preventDefault();
+            pressedKey = "ArrowLeft"
+          }
+
+          switch (pressedKey) {
+            case "Escape":
+              ee.preventDefault();
+              input.blur()
+              return false
             case "Tab":
               ee.preventDefault();
               e.target.nextElementSibling.click()
+              input.blur()
+              return false
+            case "Enter":
               input.blur()
               return false
             case 'ArrowLeft':
