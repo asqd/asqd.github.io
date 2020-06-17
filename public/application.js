@@ -29,6 +29,7 @@ const PERMITTED_KEYS = [
   "b",
   "r",
   "/",
+  "|",
   "\\",
   "v",
   "t",
@@ -116,12 +117,16 @@ function keyListener(input, evetTarget) {
   let nodeList = document.querySelectorAll(".tab span.is-editable");
   let index = Array.from(nodeList).indexOf(evetTarget);
   let rem = (index - (index % rowsNum)) / rowsNum;
-
+  
   input.addEventListener("keydown", (ee) => {
     pressedKey = ee.key;
+
+    if (pressedKey === "Backspace" || pressedKey === "Delete") return;
+
     if (PERMITTED_KEYS.indexOf(pressedKey) > -1) {
       ee.target.value = pressedKey;
     }
+
 
     ee.preventDefault();
     if (ee.shiftKey && ee.key === "Tab") {
