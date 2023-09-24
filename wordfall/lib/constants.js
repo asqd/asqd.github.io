@@ -7,9 +7,12 @@ const SPECIAL = 'ьъ'
 
 const SPAWN_X = 340
 const SPAWN_Y = 0
+
+const INITIAL_LETTER_INTERVAL = 300
 const LETTER_INTERVAL = 4000
 const LETTER_SIZE = 90
 const SPAWN_LIMITS_XY = [70 + LETTER_SIZE / 2, 610 - LETTER_SIZE / 2]
+
 const BOTTOM_TEXT_SIZE = 60
 const BUTTON_SIZE = 80
 const FONT_CONFIG = { color: '#000000', fontSize: 52, fontFamily: 'Arial Helvetica' }

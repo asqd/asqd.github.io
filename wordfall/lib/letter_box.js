@@ -47,53 +47,58 @@ class LetterBox extends Phaser.GameObjects.GameObject {
     this.text.alpha = value
   }
 
+  get stokeShift() { 
+    return 3
+  }
+
+  get radius() {
+    return this.size / 2 - this.stokeShift
+  }
+
+  get centerOffset() {
+    return [0, -1]
+  }
+
   delete() {
     this.alpha = 1
     this.scene.dict[this.letter] -= 1
+    this.tweenAlpha(0, 400, () => this.destroy())
+  }
+
+  tweenAlpha(alpha, duration = 400, onComplete = () => {}) {
     this.scene.tweens.add({
       targets: [this.shape, this.text],
-      alpha: 0,
+      alpha: alpha,
       ease: 'Linear',
-      duration: 400,
-      onComplete: () => this.destroy()
+      duration: duration,
+      onComplete: onComplete
     })
-
   }
 
   select() {
     this.selected = true
-    this.scene.tweens.add({
-      targets: [this.shape, this.text],
-      alpha: 0.5,
-      ease: 'Linear',
-      duration: 400,
-    })
+    this.tweenAlpha(0.5)
   }
 
   unSelect() {
     this.selected = false
-    this.scene.tweens.add({
-      targets: [this.shape, this.text],
-      alpha: 1,
-      ease: 'Linear',
-      duration: 400,
-    })
+    this.tweenAlpha(1)
   }
 
   initContainer(x, y) {
-    this.shape = this.scene.add.circle(0, 0, this.size / 2, LetterBox.colorObject.color)
+    this.shape = this.scene.add.circle(0, 0, this.radius, LetterBox.colorObject.darken(10).color)
+    this.shape.setStrokeStyle(6, LetterBox.colorObject.lighten(10).color)
     this.text = this.scene.add.text(
       0, 0,
       this.letter,
       LetterBox.textConfig,
     )
 
-    Phaser.Display.Align.In.Center(this.text, this.shape, 0, 4);
+    Phaser.Display.Align.In.Center(this.text, this.shape, ...this.centerOffset);
 
     this.container = this.scene.add.container(x, y, [this.shape, this.text])
     this.container.setSize(this.size, this.size)
       .setInteractive()
-      .on("pointerdown", this.scene.writeWord, this)
   }
 
   initPhysics() {
