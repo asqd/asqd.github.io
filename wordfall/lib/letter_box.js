@@ -1,4 +1,7 @@
 class LetterBox extends Phaser.GameObjects.GameObject {
+  /**
+   * @param {Phaser.Scene} scene
+   */
   constructor(scene, x, y, size, color, letter) {
     super(scene)
 
@@ -12,8 +15,9 @@ class LetterBox extends Phaser.GameObjects.GameObject {
   }
 
   static get colorObject() {
-    return COLOR_OBJECT
+    return new Phaser.Display.Color()
   }
+
   static get characters() {
     return CHARACTERS
   }
@@ -29,7 +33,7 @@ class LetterBox extends Phaser.GameObjects.GameObject {
   }
 
   static getRandomColor() {
-    return LetterBox.colorObject.random(30, 220)
+    return new Phaser.Display.Color().random(30, 220)
   }
 
   static getRandomLetter() {
@@ -47,7 +51,7 @@ class LetterBox extends Phaser.GameObjects.GameObject {
     this.text.alpha = value
   }
 
-  get stokeShift() { 
+  get stokeShift() {
     return 3
   }
 
@@ -86,8 +90,8 @@ class LetterBox extends Phaser.GameObjects.GameObject {
   }
 
   initContainer(x, y) {
-    this.shape = this.scene.add.circle(0, 0, this.radius, LetterBox.colorObject.darken(10).color)
-    this.shape.setStrokeStyle(6, LetterBox.colorObject.lighten(10).color)
+    this.shape = this.scene.add.circle(0, 0, this.radius, this.color.darken(10).color)
+    this.shape.setStrokeStyle(6, this.color.lighten(10).color)
     this.text = this.scene.add.text(
       0, 0,
       this.letter,

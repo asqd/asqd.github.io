@@ -2,6 +2,19 @@ Array.prototype.sample = function () {
   return this[Math.floor(Math.random() * this.length)];
 }
 
+Array.prototype.shuffle = function () {
+  var a = [...this],
+    n = a.length;
+
+  for (var i = n - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i];
+    a[i] = a[j];
+    a[j] = tmp;
+  }
+  return a
+}
+
 String.prototype.shuffle = function () {
   var a = this.split(""),
     n = a.length;
@@ -43,80 +56,7 @@ class Word extends Phaser.GameObjects.Text {
 
 }
 
-class GameScene extends Phaser.Scene {
-  constructor() {
-    super('GameScene');
-  }
-
-  getWords(n = 1) {
-    const words = []
-
-    for (let i = 0; i < n; i++ ) {
-      let word = window.wordList.filter((e) => 5 < e.length && e.length < 8).sample()
-      while (words.includes(word)) {
-        word =  window.wordList.filter((e) => 5 < e.length && e.length < 8).sample()
-      }
-      words.push(word)
-    }
-
-    return words
-  }
-
-  preload() {
-    Cat.loadAssets(this)
-  }
-
-  create() {
-    if (!window.wordList) {
-      window.wordList = [
-        'КОТ',
-        'ДОМ',
-        'ТОРТ'
-      ]
-    }
-
-    Cat.initAnims(this)
-    this.cat = new Cat(this, 750, 550, 'sitting', 0)
-    this.cat.setScale(5)
-
-    this.gameManager = new GameManager(this)
-    this.gameManager.initStartConditions()
-
-    this.uiManager = new UiManager(this)
-    this.uiManager.initUI()
-    const timedEvent = this.time.addEvent(
-      {
-        delay: 1000,
-        callback: this.uiManager.updateTimer,
-        callbackScope: this.uiManager,
-        loop: true
-      }
-    )
-  }
-
-  update() {
-    this.cat.update()
-    if (!this.gameOver && this.data.values.spawnCount === 0) {
-      this.gameManager.dropLetters()
-    }
-
-    if (this.gameOver && !this.lettersDisabled) { 
-      this.gameManager.letterGroup.getChildren().forEach((child) => child.container.disableInteractive())
-      this.lettersDisabled = true 
-    }
-
-    if (!this.gameOver) {
-      const { left, right } = this.gameManager.zone.getBounds()
-      const check = this.gameManager.letterGroup.getChildren().some((lb) => { return (lb.container.getBounds().left < left || lb.container.getBounds().right > right) && lb.body.y > 90 })
-      if (check) {
-        this.gameOver = true
-        this.add.rectangle(330, 600, 500, 200, 0xFFFFFF).setOrigin(0.5)
-        this.add.text(330, 600, "Вас закидали", { color: '#000000', fontSize: 80, fontFamily: 'Arial Helvetica' }).setOrigin(0.5)
-      }
-    }
-  }
-}
-
+const SCENES = [MenuScene, LevelSelectScene, EndlessGameScene, ThemedLevelScene]
 
 const config = {
   type: Phaser.AUTO,
@@ -126,7 +66,7 @@ const config = {
     width: 860,
     height: 1200,
   },
-  scene: GameScene,
+  scene: SCENES,
   parent: 'phaser-example',
   physics: {
     default: 'matter',
