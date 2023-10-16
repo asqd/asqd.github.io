@@ -87,6 +87,10 @@ class RoadRacer extends Phaser.Scene {
       frameWidth: 14,
       frameHeight: 16
     });
+    this.load.spritesheet('yellow_car', 'assets/cars/yellow.png', {
+      frameWidth: 14,
+      frameHeight: 16
+    });
   }
 
   create() {
@@ -105,7 +109,7 @@ class RoadRacer extends Phaser.Scene {
     this.car.milleagepx = 0
     this.car.setScale(4);
     this.car.setBodySize(9,12)
-    this.car.setOffset(4);
+    this.car.setOffset(4, 2);
 
     this.car.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
     this.car.speed = 0
@@ -119,6 +123,14 @@ class RoadRacer extends Phaser.Scene {
     // this.cameras.main.startFollow(this.car, true, 0.5, 0.5)
 
     // this.cameras.main.setFollowOffset(0, 0);
+
+    // let x = Phaser.Math.Between(100, 350);
+    // this.opponent = this.physics.add.sprite(x, 300, 'yellow_car');
+    // this.opponent.setVelocity(0, -50);
+    // this.opponent.setScale(5);
+    // this.opponent.setBodySize(7, 10)
+    // this.opponent.setOffset(5, 3);
+    // this.opponent.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
 
     this.input.keyboard.on('keydown-W', () => {
       this.isAccelerating = true;
@@ -183,10 +195,10 @@ class RoadRacer extends Phaser.Scene {
           this.car.speed += velocity * (dt / 70)
 
         } else if (this.car.speed > 100 && this.car.speed < 250) {
-          this.car.speed += velocity * (dt / 50)
+          this.car.speed += velocity * (dt / 30)
 
         } else {
-          this.car.speed += velocity * (dt / 20)
+          this.car.speed += velocity * (dt / 10)
         }
         // this.road.y += this.car.speed / 50
       }
@@ -199,10 +211,10 @@ class RoadRacer extends Phaser.Scene {
       velocity = this.car.acceleration * decelerationFactor * frameTime;
 
       if (this.car.speed > 0 && this.car.speed > 100) {
-        this.car.speed -= velocity * dt / 20
+        this.car.speed -= velocity * (dt / 20)
       } else
       if (this.car.speed > 0 && this.car.speed < 100) {
-        this.car.speed -= velocity * dt / 10
+        this.car.speed -= velocity * (dt / 20)
       }
       if (this.car.speed < 0 || Math.floor(this.car.speed) < 10) {
         this.car.speed = 0
@@ -211,6 +223,7 @@ class RoadRacer extends Phaser.Scene {
 
     console.log('velocity', velocity, 'speed', this.car.speed, frameTime)
     this.road.y += (this.car.speed / 3.6) * 10 * frameTime
+    // this.opponent.y -= (this.car.speed / 3.6) * 10 * frameTime / 10000
 
     // if (this.isAccelerating) {
     //   const speed = this.scrollSpeed * (2 - this.car.speed / this.car.maxSpeed)
@@ -235,8 +248,23 @@ class RoadRacer extends Phaser.Scene {
 
 
     if (this.car.speed > 0) {
+      // this.opponent.setVelocity(0, 50);
       this.car.milleage += this.car.speed / 3.6 * frameTime / 1000
+    } else {
+      // this.opponent.setVelocity(0, -50);
     }
+
+    // if (Phaser.Math.Distance.Between(this.car.x, this.car.y, this.opponent.x, this.opponent.y) < 150 && !this.opponent.moved) {
+    //   // let direction = Phaser.Math.Between(0, 1) === 0 ? -1 : 1;
+    //   let direction = this.car.x < this.opponent.x ? 1 : -1 // Phaser.Math.Between(0, 1) === 0 ? -1 : 1;
+    //   this.opponent.moved = true
+    //   this.tweens.add({
+    //     targets: this.opponent,
+    //     x: this.opponent.x + (direction * 50),
+    //     duration: 1000,
+    //     ease: 'Linear',
+    //   })
+    // }
 
     if (this.timer % 1000) {
       this.timerText.setText(`Время: \n${Math.floor(this.timer/1000)} c`);
