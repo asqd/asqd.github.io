@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta property="og:title" content="Swagger OpenAPI Endpoint Generator">
+  <meta property="og:url" content="asqd.github.io/swagger_gen">
+  <meta property="og:site_name" content="Swagger OpenAPI API Endpoint Generator">
+  <meta property="og:description" content="Swagger OpenAPI Endpoint Generator">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swagger OpenAPI Endpoint Generator</title>
+  <script src="js/js-yaml.min.js"></script>
+  <style>
+    #clipboard {
+      position: absolute;
+      left: -100%;
+    }
+
+    #copyButton {
+      position: absolute;
+      top: 75px;
+      right: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <textarea id="clipboard"></textarea>
+  <center>
+    <h1>Swagger API Endpoint Generator (BETA)</h1>
+  </center>
+  <div style="width: 40%; float: left; margin-left: 10px; margin-bottom: 20px;">
+    <h3>Endpoint settings</h3>
+    <div style="height: 20px; margin-bottom: 10px;">
+      <div style="float: left;">
+        <select id="httpVerb">
+          <option value="GET">GET</option>
+          <option value="POST">POST</option>
+          <option value="PUT">PUT</option>
+          <option value="DELETE">DELETE</option>
+        </select>
+        <input type="text" id="endpoint" placeholder="/endpoint" size="50">
+      </div>
+    </div>
+
+    <h3>Request settings</h3>
+    <div style="height: 20px; margin-bottom: 10px;">
+      <div style="float: left;">
+        <label for="requestBodyType">Request Type:</label>
+        <select id="requestBodyType">
+          <option value="application-json">application/json</option>
+          <option value="query-params">query params</option>
+          <!-- <option value="x-www-form-urlencoded">application/x-www-form-urlencoded</option> -->
+        </select>
+      </div>
+    </div>
+    <div>
+      <section style="margin: 10px 0;">
+        <label for="requestBody">Request Body or Parameters:</label>
+      </section>
+      <textarea id="requestBody" rows="15" cols="65" placeholder="Request body or parameters..."></textarea>
+      <div id="requestBodyErrors" style="color: red;"></div>
+    </div>
+
+    <h3>Response settings</h3>
+    <div id="responseFields">
+      <div class="response-field">
+        <div style="height: 20px; margin-bottom: 10px;">
+          <label for="responseCode">Response Code:</label>
+          <select class="responseCode" name="responseCode">
+            <option value="200">200</option>
+            <option value="201">201</option>
+            <option value="401">401</option>
+            <option value="404">404</option>
+            <option value="422">422</option>
+          </select>
+        </div>
+        <div style="height: 20px; margin-bottom: 10px;">
+          <label for="exampleName">Example Name:</label>
+          <input class="exampleName" size=45 type="text" name="exampleName" placeholder="Example Name">
+
+        </div>
+        <div style="margin-bottom: 10px;">
+          <section style="margin: 10px 0;">
+            <label for="serverResponse">Server Response:</label>
+            <button hidden class="remove-response" style="margin-left: 175px;">Remove Response</button>
+          </section>
+          <textarea rows="15" cols="65" class="serverResponse" name="serverResponse"
+            placeholder="Server response..."></textarea>
+          <div class="serverResponseError" style="color: red;"></div>
+        </div>
+      </div>
+    </div>
+    <button id="addResponse">Add Response</button>
+    <br>
+  </div>
+  <div style="text-align: center; width: 10%; float: left;">
+    <div style="position: relative; top: 70px; height: 20px; margin-bottom: 5px;">
+      <label for="swaggerFormat">Format:</label>
+      <br>
+      <select id="swaggerFormat">
+        <option value="JSON">JSON</option>
+        <option value="YAML">YAML</option>
+      </select>
+    </div>
+    <button style="position: relative; top: 100px; height: 50px;" onclick="generateSwagger()">Generate</button>
+  </div>
+
+  <div style="width: 45%; float: left; position: relative;">
+    <h2>Swagger API Endpoint:</h2>
+    <button id="copyButton">Copy code</button>
+    <pre id="swaggerOutput"
+      style="padding: 5px 10px; border: solid 1px; min-height: 750px; white-space: pre-wrap; word-break: break-all;"></pre>
+  </div>
+  <script src="js/script.js"></script>
+</body>
+
+</html>
