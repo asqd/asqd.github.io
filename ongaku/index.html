@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Гаммы</title>
+  <style>
+    #result {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <label for="scale">Тип лада:</label>
+  <select id="scale">
+    <!-- <option value="major">Мажор</option>
+    <option value="minor">Минор</option>
+    <option value="dorian">Дорийский</option>
+    <option value="phrygian">Фригийский</option>
+    <option value="lydian">Лидийский</option> -->
+  </select>
+
+  <label for="rootNote">Начальная нота:</label>
+  <select id="rootNote">
+    <option value="C">C</option>
+    <option value="C#">C#</option>
+    <option value="D">D</option>
+    <option value="D#">D#</option>
+    <option value="E">E</option>
+    <option value="E#">E#</option>
+    <option value="F">F</option>
+    <option value="F#">F#</option>
+    <option value="G">G</option>
+    <option value="G#">G#</option>
+    <option value="A">A</option>
+    <option value="A#">A#</option>
+    <option value="B">B</option>
+    <option value="B#">B#</option>
+    <!-- Добавьте другие ноты по желанию -->
+  </select>
+
+  <button onclick="generateScale()">Генерировать гамму</button>
+
+  <div id="result"></div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
