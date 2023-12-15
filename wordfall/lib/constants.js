@@ -1,9 +1,13 @@
+const APP_VERSION = 'v7.1.5'
+
 const COLOR_OBJECT = new Phaser.Display.Color();
 const CHARACTERS = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
 const CHARACTERS_LENGTH = CHARACTERS.length;
 const VOWELS = 'АУОЫЭЯЮЁИЕ'
 const CONSONANTS = 'БВГДЖЗЙКЛМНПРСТФХЦЧШЩ'
 const SPECIAL = 'ьъ'
+const GAME_OVER_TEXT = "Вас закидали"
+const TIME_OVER_TEXT = "Время вышло!"
 
 const SPAWN_X = 340
 const SPAWN_Y = 0
@@ -15,7 +19,23 @@ const SPAWN_LIMITS_XY = [70 + LETTER_SIZE / 2, 610 - LETTER_SIZE / 2]
 
 const BOTTOM_TEXT_SIZE = 60
 const BUTTON_SIZE = 80
-const FONT_CONFIG = { color: '#000000', fontSize: 52, fontFamily: 'Arial Helvetica' }
+const FONT_CONFIG = { color: '#000000', fontSize: 52, fontFamily: 'Arial Helvetica', resolution: window.devicePixelRatio }
+
+const LEVEL_LIST = {
+  1: {
+    title: "Популярные слова",
+    wordList: "frequentNouns",
+    // wordsLimit: 1000,
+    timeLimit: 0
+  },
+  2: {
+    title: "Животные леса",
+    wordList: "animalsList",
+    wordsLimit: 30,
+    timeLimit: 180
+  },
+}
+
 const ETALON_LETTERS = {
   "О": 0.10983,
   "Е": 0.08483,

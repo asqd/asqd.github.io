@@ -1,4 +1,7 @@
 class Cat extends Phaser.GameObjects.Sprite {
+  /**
+   * @param {Phaser.Scene} scene
+   */
   constructor(scene, x, y, texture, frame) {
     super(scene, x, y, texture, frame)
     scene.add.existing(this)

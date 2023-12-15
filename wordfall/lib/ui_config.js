@@ -14,6 +14,10 @@ class UiConfig {
     return Phaser.Display.Color.HexStringToColor(UiConfig.BLACK_COLOR).color
   }
 
+  static get PASTEL_GREEN_COLOR() {
+    return "#77dd77"
+  }
+
   static get GREEN_COLOR() {
     return "#99cc99"
   }
@@ -26,8 +30,16 @@ class UiConfig {
     return "#CC3333"
   }
 
+  static get LIGHT_GREY_COLOR() {
+    return "#f5f6f7"
+  }
+  
   static get GREY_COLOR() {
     return "#bbbbbb"
+  }
+
+  static get GREY_COLOR_HEX() {
+    return Phaser.Display.Color.HexStringToColor(UiConfig.GREY_COLOR).color
   }
 
   static get APPLY_ICON() {

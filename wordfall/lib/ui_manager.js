@@ -1,9 +1,15 @@
 class UiManager {
+  /**
+   * @param {Phaser.Scene} scene
+   */
   constructor(scene) {
     this.scene = scene
-    this.gameManager = scene.gameManager
+    // this.gameManager = scene.gameManager
 
     this.fontSize = BOTTOM_TEXT_SIZE
+    this.wordsCountTextStr = UiConfig.WORDS_COUNT_TEXT 
+    if (this.scene.data.get("totalWords") && this.scene.data.get("totalWords") > 0)
+      this.wordsCountTextStr = `${this.wordsCountTextStr}/${this.scene.data.get("totalWords")}`
   }
 
   initUI() {
@@ -32,10 +38,10 @@ class UiManager {
     )
   }
   wordsCountTextInit() {
-    this.wordsText = this.scene.add.text(
+    this.wordsCountText = this.scene.add.text(
       UiConfig.UI_X,
       UiConfig.UI_Y + 200,
-      UiConfig.WORDS_COUNT_TEXT.format({ words: this.scene.data.get('words') }),
+      this.wordsCountTextStr.format({ words: this.scene.data.get('words') }),
       UiConfig.UI_FONT_CONFIG
     )
   }
@@ -114,12 +120,12 @@ class UiManager {
     this.scene.data.inc('words')
     this.scene.data.values.score += this.wordText.text.length * 5 + 5
     
-    this.wordsText.setText(UiConfig.WORDS_COUNT_TEXT.format({ words: this.scene.data.get('words') }))
+    this.wordsCountText.setText(this.wordsCountTextStr.format({ words: this.scene.data.get('words') }))
     this.scoreText.setText(UiConfig.SCORE_TEXT.format({ score: this.scene.data.get('score') }))
   }
 
   clearUsedLetters() {
-    this.gameManager.letterGroup.children.entries.forEach((letter) => {
+    this.scene.letterGroup.children.entries.forEach((letter) => {
       if (letter.selected) {
         letter.delete()
       }
@@ -131,7 +137,7 @@ class UiManager {
     this.wordText.setAlpha(1)
     this.wordText.setFontSize(BOTTOM_TEXT_SIZE)
     this.fontSize = BOTTOM_TEXT_SIZE
-    this.gameManager.letterGroup.children.each((letter) => {
+    this.scene.letterGroup.children.each((letter) => {
       letter.unSelect()
     })
   }
@@ -157,6 +163,7 @@ class UiManager {
       onComplete: () => {
         this.wordApply.setColor(UiConfig.GREEN_COLOR)
         this.wordText.setColor(UiConfig.BLACK_COLOR)
+        this.clicked = false
       }
     })
   }
@@ -201,6 +208,7 @@ class UiManager {
       duration: 400,
       onComplete: () => {
         this.clearSuccessWord()
+        this.clicked = false
       }
     })
   }
@@ -233,15 +241,18 @@ class UiManager {
         // this.wordText.setAlpha(1)
         // this.wordText.setFontSize(BOTTOM_TEXT_SIZE)
         // this.fontSize = BOTTOM_TEXT_SIZE
-        // this.gameManager.letterGroup.children.each((letter) => {
-        //   letter.unSelect()
-        // })
+        this.scene.letterGroup.children.each((letter) => {
+          letter.unSelect()
+        })
       }
     })
   }
 
   completeWord() {
-    if (!window.wordList.includes(this.wordText.text.toLocaleLowerCase())) {
+    if (this.scene.gameOver || this.clicked) return
+
+    this.clicked = true
+    if (!this.scene.wordsCollection.includes(this.wordText.text.toLocaleLowerCase())) {
       this.tweenErrorApply()
       this.tweenErrorShakeWordText()
 
@@ -258,6 +269,8 @@ class UiManager {
   }
 
   clearWord() {
+    if (this.scene.gameOver) return
+
     this.tweenClearTransition()
     this.tweenClearWordText()
   }

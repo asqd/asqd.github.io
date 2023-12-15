@@ -1,12 +1,12 @@
 class GameManager {
+  /** 
+   * @param {Phaser.Scene} scene
+   */
   constructor(scene) {
     this.scene = scene
-
-    Object.assign(
-      GameManager.prototype, 
-      pickLetterMixin, 
-      spawnLettersMixin
-    )
+    this.initStartConditions()
+    this.LetterSpawner = new LetterSpawner(scene, this.scene.recentlyLetters)
+    this.LetterPicker = this.LetterSpawner.LetterPicker
   }
 
   static get greyColor() {
@@ -45,7 +45,7 @@ class GameManager {
     const pLineLeft = this.scene.add.rectangle(45, 545, 30, 920, GameManager.greyColor);
     this.scene.matter.add.gameObject(pLineLeft, GameManager.matterStaticConfig)
     
-    const pLineBottom = this.scene.add.rectangle(340, 1000, 600, 20, GameManager.greyColor);
+    const pLineBottom = this.scene.add.rectangle(340, 1000, 600, 30, GameManager.greyColor);
     this.scene.matter.add.gameObject(pLineBottom, GameManager.matterStaticConfig)
     
     const pLineRight = this.scene.add.rectangle(635, 545, 30, 920, GameManager.greyColor);
@@ -67,24 +67,13 @@ class GameManager {
       spawnCount: 0
     })
 
-    this.letterGroup = this.scene.add.group()
-    this.recentlyLetters = []
-
+    this.scene.letterGroup = this.scene.add.group()
+    this.scene.recentlyLetters = []
     this.initBounds()
-
-    const letters = this.genereateLetters(25).join("")
-    this.spawnLetters(letters, true, null, SPAWN_Y + 100)
   }
 
-  addLetterToWord(letter, word) {
-    if (letter.selected) return
-
-    letter.select()
-    word.text += letter.text.text
-
-    if (word.text.length >= 10) {
-      this.scene.uiManager.fontSize = Math.floor(parseInt((this.scene.uiManager.fontSize * 0.96).toFixed()))
-      word.setFontSize(this.scene.uiManager.fontSize)
-    }
+  initLettersSpawn(n = 25) {
+    const letters = this.LetterPicker.pickLetters(n).join("")
+    this.LetterSpawner.spawnLetters(letters, true, null, SPAWN_Y + 100)
   }
 }
