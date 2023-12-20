@@ -32,6 +32,10 @@ class MenuScene extends Phaser.Scene {
     this.versionText
   }
 
+  preload() {
+    IconButton.loadAssets(this)
+  }
+
   create() {
     this.versionText()
 

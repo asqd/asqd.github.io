@@ -241,9 +241,9 @@ class UiManager {
         // this.wordText.setAlpha(1)
         // this.wordText.setFontSize(BOTTOM_TEXT_SIZE)
         // this.fontSize = BOTTOM_TEXT_SIZE
-        this.scene.letterGroup.children.each((letter) => {
-          letter.unSelect()
-        })
+        // this.scene.letterGroup.children.each((letter) => {
+        //   letter.unSelect()
+        // })
       }
     })
   }
