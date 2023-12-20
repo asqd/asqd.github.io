@@ -57,7 +57,8 @@ class Word extends Phaser.GameObjects.Text {
 }
 
 const SCENES = [MenuScene, LevelSelectScene, EndlessGameScene, ThemedLevelScene]
-
+const SCREEN_WIDHT = 720
+const SCREEN_HEIGHT = 1280
 const config = {
   type: Phaser.AUTO,
   scale: {

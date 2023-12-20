@@ -37,18 +37,18 @@ class GameManager {
   }
 
   initBackgroundZone() {
-    this.zone = this.scene.add.rectangle(340, 545, 620, 920)
+    this.zone = this.scene.add.rectangle(340, 545, 620, 1070)
     this.zone.setFillStyle(0x808080, 0.5)
   }
 
   initBounds() {  
-    const pLineLeft = this.scene.add.rectangle(45, 545, 30, 920, GameManager.greyColor);
+    const pLineLeft = this.scene.add.rectangle(45, 545, 30, 1070, GameManager.greyColor);
     this.scene.matter.add.gameObject(pLineLeft, GameManager.matterStaticConfig)
     
     const pLineBottom = this.scene.add.rectangle(340, 1000, 600, 30, GameManager.greyColor);
     this.scene.matter.add.gameObject(pLineBottom, GameManager.matterStaticConfig)
     
-    const pLineRight = this.scene.add.rectangle(635, 545, 30, 920, GameManager.greyColor);
+    const pLineRight = this.scene.add.rectangle(635, 545, 30, 1070, GameManager.greyColor);
     this.scene.matter.add.gameObject(pLineRight, GameManager.matterStaticConfig)
 
     this.initBackgroundZone()
@@ -74,6 +74,6 @@ class GameManager {
 
   initLettersSpawn(n = 25) {
     const letters = this.LetterPicker.pickLetters(n).join("")
-    this.LetterSpawner.spawnLetters(letters, true, null, SPAWN_Y + 100)
+    this.LetterSpawner.spawnLetters(letters, true, null, SPAWN_Y)
   }
 }

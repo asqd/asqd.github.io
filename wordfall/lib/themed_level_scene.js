@@ -22,16 +22,17 @@ class ThemedLevelScene extends BaseGameScene {
   spawnWords(n=8) {
     this.currentCollection = this.currentCollection.shuffle()
     const words = this.currentCollection.splice(0, n)
+    let sumTimeShift = 0
 
-    console.log(words);
-    words.forEach((word, i) => {
-      const timeShift = i * INITIAL_LETTER_INTERVAL * 4
+    words.forEach((word) => {
+      const timeShift = INITIAL_LETTER_INTERVAL * word.length
       this.time.delayedCall(
-        timeShift,
+        sumTimeShift,
         this.gameManager.LetterSpawner.spawnWord,
         [word, INITIAL_LETTER_INTERVAL, null, null, LetterBox.getRandomColor()],
         this.gameManager.LetterSpawner
       )
+      sumTimeShift += timeShift
     })
   }
   create() {

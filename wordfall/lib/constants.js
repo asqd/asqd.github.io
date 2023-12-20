@@ -1,4 +1,4 @@
-const APP_VERSION = 'v7.1.5'
+const APP_VERSION = 'v7.1.7'
 
 const COLOR_OBJECT = new Phaser.Display.Color();
 const CHARACTERS = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
@@ -10,12 +10,12 @@ const GAME_OVER_TEXT = "Вас закидали"
 const TIME_OVER_TEXT = "Время вышло!"
 
 const SPAWN_X = 340
-const SPAWN_Y = 0
+const SPAWN_Y = 50
 
 const INITIAL_LETTER_INTERVAL = 300
 const LETTER_INTERVAL = 4000
 const LETTER_SIZE = 90
-const SPAWN_LIMITS_XY = [70 + LETTER_SIZE / 2, 610 - LETTER_SIZE / 2]
+const SPAWN_LIMITS_XY = [80 + LETTER_SIZE / 2, 600 - LETTER_SIZE / 2]
 
 const BOTTOM_TEXT_SIZE = 60
 const BUTTON_SIZE = 80
