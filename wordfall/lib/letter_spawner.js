@@ -16,6 +16,8 @@ class LetterSpawner {
   }
 
   spawnWord(word, delay, x, y, c) {
+    if (this.gameOver) return
+
     const shuffledWord = word.shuffle()
 
     if (this.recentlyLetters) {

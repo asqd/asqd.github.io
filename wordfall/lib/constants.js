@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 const APP_VERSION = 'v7.1.6'
+=======
+const APP_VERSION = 'v7.1.7'
+>>>>>>> 6851287b6e4e1f5a497f9246ec8685c2c919f09c
 
 const COLOR_OBJECT = new Phaser.Display.Color();
 const CHARACTERS = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
