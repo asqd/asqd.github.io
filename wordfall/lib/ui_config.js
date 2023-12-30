@@ -10,6 +10,10 @@ class UiConfig {
     return "#000000"
   }
 
+  static get WHITE_COLOR() {
+    return "#ffffff"
+  }
+
   static get BLACK_COLOR_HEX() {
     return Phaser.Display.Color.HexStringToColor(UiConfig.BLACK_COLOR).color
   }
@@ -48,6 +52,14 @@ class UiConfig {
 
   static get CANCEL_ICON() {
     return "✗"
+  }
+
+  static get BASE_UI_X() {
+    return 0
+  }
+
+  static get BASE_UI_Y() {
+    return 0
   }
 
   static get UI_X() {

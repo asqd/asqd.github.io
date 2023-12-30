@@ -30,11 +30,11 @@ class TextButton extends Button {
     this.text = this.scene.add.text(
       0, 0,
       this.textContent,
-      this.constructor.textConfig,
+      TextButton.textConfig,
     )
 
     const scale = this.width / this.text.width
-    this.text.setFontSize(this.constructor.textConfig.fontSize * scale)
+    this.text.setFontSize(TextButton.textConfig.fontSize * scale)
 
     Phaser.Display.Align.In.Center(this.text, this.shape, ...this.centerOffset);
 

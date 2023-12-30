@@ -24,6 +24,7 @@ class ThemedLevelScene extends BaseGameScene {
     const words = this.currentCollection.splice(0, n)
     let sumTimeShift = 0
 
+    console.log(words);
     words.forEach((word) => {
       const timeShift = INITIAL_LETTER_INTERVAL * word.length
       this.time.delayedCall(

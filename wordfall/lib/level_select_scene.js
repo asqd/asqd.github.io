@@ -7,25 +7,26 @@ class LevelSelectScene extends Phaser.Scene {
   }
 
   create() {
+    // Размеры сетки
+    const gridCols = 2
+    const gridRows = 4
+
+    // Размер и отступы между кнопками
+    const buttonWidth = 200
+    const buttonHeight = 150
+    const buttonSpacingX = 90
+    const buttonSpacingY = 50
+
+    const startX = 60
+    const startY = 100
+
     // Количество уровней на странице
-    const levelsPerPage = 9
+    const levelsPerPage = gridCols * gridRows
     // Общее количество уровней
     const totalLevels = Object.keys(LEVEL_LIST).length
     const totalPages = Math.ceil(totalLevels / levelsPerPage) // Общее количество страниц
 
 
-    // Размеры сетки
-    const gridCols = 3
-    const gridRows = 3
-
-    // Размер и отступы между кнопками
-    const buttonWidth = 200
-    const buttonHeight = 150
-    const buttonSpacingX = 60
-    const buttonSpacingY = 50
-
-    const startX = 75
-    const startY = 150
 
     const levelGroup = this.add.group()
 
@@ -41,7 +42,7 @@ class LevelSelectScene extends Phaser.Scene {
 
         const levelButton = this.add.container(0, 0, [levelText, starsText, levelTitle, levelRect])
         levelButton.setSize(buttonWidth, levelTitle.height + levelRect.height + 20)
-        levelButton.setInteractive()
+        levelButton.setInteractive({ cursor: 'pointer' })
         Phaser.Display.Align.In.BottomCenter(levelTitle, levelButton)
         Phaser.Display.Align.In.TopCenter(levelRect, levelButton)
         Phaser.Display.Align.In.Center(levelText, levelRect, 0, -20)
@@ -64,15 +65,16 @@ class LevelSelectScene extends Phaser.Scene {
         cellWidth: buttonWidth + buttonSpacingX,
         cellHeight: buttonHeight + buttonSpacingY * 2,
         x: startX,
-        y: startY
+        y: startY,
+        position: Phaser.Display.Align.CENTER
       });
     }
 
     createLevelButtons()
 
     if (this.currentPage > 1) {
-      const prevButton = this.add.text(50, 1000, '<<', TEXT_CONFIG)
-      prevButton.setInteractive()
+      const prevButton = this.add.text(50, 1150, '⧀', { TEXT_CONFIG, ...{ fontSize: 120 } })
+      prevButton.setInteractive({ cursor: 'pointer' })
 
       prevButton.on('pointerdown', () => {
         if (this.currentPage > 1) {
@@ -86,8 +88,8 @@ class LevelSelectScene extends Phaser.Scene {
     }
 
     if (this.currentPage < totalPages) {
-      const nextButton = this.add.text(710, 1000, '>>', TEXT_CONFIG)
-      nextButton.setInteractive()
+      const nextButton = this.add.text(580, 1150, '⧁', { TEXT_CONFIG, ...{ fontSize: 120 } })
+      nextButton.setInteractive({ cursor: 'pointer' })
 
       nextButton.on('pointerdown', () => {
         if (this.currentPage < totalPages) {
@@ -99,5 +101,15 @@ class LevelSelectScene extends Phaser.Scene {
       nextButton.on('pointerover', () => nextButton.setColor(UiConfig.PASTEL_GREEN_COLOR))
       nextButton.on('pointerout', () => nextButton.setColor(UiConfig.LIGHT_GREY_COLOR))
     }
+
+    const menuButton = this.add.text(320, 1160, '☰', { TEXT_CONFIG, ...{ fontSize: 90 } })
+    menuButton.setInteractive({ cursor: 'pointer' })
+
+    menuButton.on('pointerdown', () => {
+      this.scene.sleep(this.scene.key).run('MenuScene')
+    })
+
+    menuButton.on('pointerover', () => menuButton.setColor(UiConfig.PASTEL_GREEN_COLOR))
+    menuButton.on('pointerout', () => menuButton.setColor(UiConfig.LIGHT_GREY_COLOR))
   }
 }

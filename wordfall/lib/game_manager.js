@@ -37,19 +37,46 @@ class GameManager {
   }
 
   initBackgroundZone() {
-    this.zone = this.scene.add.rectangle(340, 545, 620, 1070)
+    this.zone = this.scene.add.rectangle(360, 590, 720, 980)
     this.zone.setFillStyle(0x808080, 0.5)
   }
 
+  
   initBounds() {  
-    const pLineLeft = this.scene.add.rectangle(45, 545, 30, 1070, GameManager.greyColor);
-    this.scene.matter.add.gameObject(pLineLeft, GameManager.matterStaticConfig)
+    const bounds = {
+      left: {
+        x: 5,
+        y: 590,
+        width: 10,
+        height: 980
+      },
+      right: {
+        x: 715,
+        y: 590,
+        width: 10,
+        height: 980
+      },
+      bottom: {
+        x: 360,
+        y: 1075,
+        width: 730,
+        height: 20
+      }
+    }
+    // const pLineLeft = this.scene.add.rectangle(45, 545, 30, 1070, GameManager.greyColor);
+    // this.scene.matter.add.gameObject(pLineLeft, GameManager.matterStaticConfig)
     
-    const pLineBottom = this.scene.add.rectangle(340, 1000, 600, 30, GameManager.greyColor);
-    this.scene.matter.add.gameObject(pLineBottom, GameManager.matterStaticConfig)
-    
-    const pLineRight = this.scene.add.rectangle(635, 545, 30, 1070, GameManager.greyColor);
-    this.scene.matter.add.gameObject(pLineRight, GameManager.matterStaticConfig)
+    // const pLineBottom = this.scene.add.rectangle(340, 1000, 600, 30, GameManager.greyColor);
+    // this.scene.matter.add.gameObject(pLineBottom, GameManager.matterStaticConfig)
+    const extract = (obj) => Object.entries(obj).slice(0, 4).map((entry) => entry[1])
+
+    console.log(extract(bounds.left));
+    const pLineLeft = new Bound(this.scene, ...extract(bounds.left))
+    const pLineBottom = new Bound(this.scene, ...extract(bounds.bottom))
+    const pLineRight = new Bound(this.scene, ...extract(bounds.right))
+
+    // const pLineRight = this.scene.add.rectangle(635, 545, 30, 1070, GameManager.greyColor);
+    // this.scene.matter.add.gameObject(pLineRight, GameManager.matterStaticConfig)
 
     this.initBackgroundZone()
     this.drawWordField()

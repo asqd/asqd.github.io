@@ -36,8 +36,10 @@ class EndlessGameScene extends BaseGameScene {
 
     if (!this.gameOver) {
       const { left, right } = this.gameManager.zone.getBounds();
-      const check = this.letterGroup.getChildren().some((lb) => { return (lb.container.getBounds().left < left || lb.container.getBounds().right > right) && lb.body.y > 90; });
+      const check = this.letterGroup.getChildren().some((lb) => { return (lb.container.getBounds().left < (left - 20) || lb.container.getBounds().right > (right + 20)) && lb.body.y > 90; });
       if (check) {
+        console.log(left);
+        console.log(right);
         this.gameOver = true;
         this.add.rectangle(330, 600, 500, 200, 0xFFFFFF).setOrigin(0.5);
         this.add.text(330, 600, GAME_OVER_TEXT, FONT_CONFIG).setOrigin(0.5);
