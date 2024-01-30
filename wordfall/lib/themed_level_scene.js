@@ -17,6 +17,15 @@ class ThemedLevelScene extends BaseGameScene {
     this.data.set({ wordsPackCount: 1 })
 
     this.currentCollection = this.wordsCollection
+
+    this.data.events.on(
+      'changedata',
+      (gameObject, key, value) => {
+        if (key === 'words') {
+          this.spawnWords(1)
+        }
+      }
+    )
   }
 
   spawnWords(n=8) {
@@ -45,10 +54,10 @@ class ThemedLevelScene extends BaseGameScene {
   update() {
     super.update()
 
-    if (this.data.get('words') > this.data.get('wordsPackCount') * 5) {
-      this.data.inc('wordsPackCount')
-      this.spawnWords(5)
-    }
+    // if (this.data.get('words') > this.data.get('wordsPackCount') * 5) {
+    //   this.data.inc('wordsPackCount')
+    //   this.spawnWords(5)
+    // }
 
     if (this.gameOver && !this.lettersDisabled) {
       this.letterGroup.getChildren().forEach((child) => child.container.disableInteractive());

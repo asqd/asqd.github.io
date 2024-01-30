@@ -30,7 +30,7 @@ class GameManager {
   }
 
   drawWordField() {
-    this.wordField = new Phaser.Geom.Rectangle(30, 1000, 620, 200);
+    this.wordField = new Phaser.Geom.Rectangle(0, 1075, 720, 230);
 
     this.graphics = this.scene.add.graphics(GameManager.graphicConfig);
     this.graphics.fillRectShape(this.wordField);

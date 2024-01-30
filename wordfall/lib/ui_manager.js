@@ -22,6 +22,7 @@ class UiManager {
     this.applyButtonInit()
     this.resetButtonInit()
 
+    this.textGroup.getChildren().forEach((text) => text.setDepth(100))
     this.alignTextUI()
   }
 
@@ -29,9 +30,9 @@ class UiManager {
     Phaser.Actions.GridAlign(this.textGroup.getChildren(), {
       width: 3,
       height: 1,
-      cellWidth: 150 + 50,
+      cellWidth: 150 + 100,
       cellHeight: 80,
-      x: 30,
+      x: 60,
       y: 10
     });
   }
@@ -98,8 +99,8 @@ class UiManager {
 
   wordTextInit() {
     this.wordText = this.scene.add.text(
-      335,
-      1050,
+      360,
+      1125,
       "",
       { ...FONT_CONFIG, ...{ fontSize: BOTTOM_TEXT_SIZE } }
     )
@@ -107,11 +108,11 @@ class UiManager {
   }
 
   applyButtonInit() {
-    this.wordApplyFrame = this.scene.add.rectangle(495, 1150, 300, 85)
+    this.wordApplyFrame = this.scene.add.rectangle(540, 1230, 350, 85)
     this.wordApplyFrame.setStrokeStyle(4, UiConfig.BLACK_COLOR_HEX)
     // this.wordApplyFrame.setOrigin(0.5, 0)
 
-    this.wordApply = this.scene.add.text(500, 1150, UiConfig.APPLY_ICON, { ...UiConfig.BUTTON_FONT_CONFIG, ...{ color: UiConfig.GREEN_COLOR } })
+    this.wordApply = this.scene.add.text(540, 1230, UiConfig.APPLY_ICON, { ...UiConfig.BUTTON_FONT_CONFIG, ...{ color: UiConfig.GREEN_COLOR } })
     this.wordApply.setOrigin(0.5)
 
     this.wordApplyFrame.setInteractive()
@@ -119,10 +120,10 @@ class UiManager {
   }
 
   resetButtonInit() {
-    this.wordResetFrame = this.scene.add.rectangle(185, 1150, 300, 85)
+    this.wordResetFrame = this.scene.add.rectangle(180, 1230, 350, 85)
     this.wordResetFrame.setStrokeStyle(4, UiConfig.BLACK_COLOR_HEX)
 
-    this.wordReset = this.scene.add.text(185, 1150, UiConfig.CANCEL_ICON, { ...UiConfig.BUTTON_FONT_CONFIG, ...{ color: UiConfig.ROSE_COLOR } })
+    this.wordReset = this.scene.add.text(180, 1230, UiConfig.CANCEL_ICON, { ...UiConfig.BUTTON_FONT_CONFIG, ...{ color: UiConfig.ROSE_COLOR } })
     this.wordReset.setOrigin(0.5)
 
     this.wordResetFrame.setInteractive()
@@ -161,7 +162,7 @@ class UiManager {
 
   updateScore() {
     this.scene.data.inc('words')
-    this.scene.data.values.score += this.wordText.text.length * 5 + 5
+    this.scene.data.values.score += this.wordText.text.length * 100 + 200
 
     // this.wordsCountText.setText(this.wordsCountTextStr.format({ words: this.scene.data.get('words') }))
     // this.scoreText.setText(UiConfig.SCORE_TEXT.format({ score: this.scene.data.get('score') }))
