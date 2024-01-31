@@ -18,9 +18,10 @@ class ThemedLevelScene extends BaseGameScene {
 
     this.currentCollection = this.wordsCollection
 
+    // spawn new word after player complete any one
     this.data.events.on(
       'changedata',
-      (gameObject, key, value) => {
+      (_gameObject, key, _value) => {
         if (key === 'words') {
           this.spawnWords(1)
         }
@@ -47,7 +48,8 @@ class ThemedLevelScene extends BaseGameScene {
   }
   create() {
     super.create()
-
+    // пример элемента использования статистики
+    // new GameStat(this, 350, 600, 600, 400, `${TIME_OVER_TEXT}\n слов 5 \n очков `)
     this.spawnWords()
   }
 
