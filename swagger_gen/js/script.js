@@ -25,14 +25,20 @@ function parseQueryParams(queryString) {
   const result = {};
 
   for (const [key, value] of queryParams) {
-    result[key] = convertValue(value);
+    if (key.slice(-2) === '[]') {
+      result[key.slice(0,-2)] = convertValue(queryParams.getAll(key));
+    } else {
+      result[key] = convertValue(value);
+    }
   }
 
   return result;
 }
 
 function convertValue(value) {
-  if (intRegex.test(value)) {
+  if (Array.isArray(value)) {
+    return composeArrayFromValue(value)
+  } else if (intRegex.test(value)) {
     return parseInt(value, 10);
   } else if (floatRegex.test(value)) {
     return parseFloat(value);
@@ -41,6 +47,10 @@ function convertValue(value) {
   } else {
     return value;
   }
+}
+
+function composeArrayFromValue(array) {
+  return array.map((element) => convertValue(element))
 }
 
 
