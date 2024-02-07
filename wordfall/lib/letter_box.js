@@ -109,7 +109,7 @@ class LetterBox extends Phaser.GameObjects.GameObject {
     this.body = this.scene.matter.add.gameObject(this.container)
     this.body.setCircle()
       .setFriction(0.005, 0, 0)
-      .setBounce(0.1)
+      .setBounce(0.2)
       .setAngle(180 * Math.random() * 10)
   }
 }

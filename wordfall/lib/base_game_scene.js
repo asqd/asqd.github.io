@@ -1,7 +1,11 @@
 class BaseGameScene extends Phaser.Scene {
 
+  init(data) {
+    this.data.set({ "gameState": loadStateData() || initialGameState })
+  }
+
   preload() {
-    Cat.loadAssets(this)
+    // Cat.loadAssets(this)
   }
 
   create() {
@@ -13,9 +17,9 @@ class BaseGameScene extends Phaser.Scene {
       ]
     }
 
-    Cat.initAnims(this)
-    this.cat = new Cat(this, 750, 550, 'sitting', 0)
-    this.cat.setScale(5)
+    // Cat.initAnims(this)
+    // this.cat = new Cat(this, 750, 550, 'sitting', 0)
+    // this.cat.setScale(5)
 
     this.gameManager = new GameManager(this)
 
@@ -33,6 +37,6 @@ class BaseGameScene extends Phaser.Scene {
   }
 
   update() {
-    this.cat.update()
+    // this.cat.update()
   }
 }

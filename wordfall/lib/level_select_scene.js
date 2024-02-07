@@ -49,7 +49,10 @@ class LevelSelectScene extends Phaser.Scene {
         Phaser.Display.Align.In.Center(starsText, levelRect, 0, 20)
 
         levelButton.on('pointerdown', () => {
-          this.scene.start("ThemedLevelScene", { collectionId: i+1})
+          this.scene.sleep()
+          this.scene.add('ThemedLevelScene', ThemedLevelScene, false, { collectionId: i + 1 })
+
+          this.scene.launch("ThemedLevelScene", { collectionId: i+1})
           console.log(`${LEVEL} ${i + 1}`)
         })
 

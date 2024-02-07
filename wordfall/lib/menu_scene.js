@@ -35,7 +35,7 @@ class MenuScene extends Phaser.Scene {
   }
 
   preload() {
-    IconButton.loadAssets(this)
+    // IconButton.loadAssets(this)
   }
 
   create() {
@@ -44,11 +44,11 @@ class MenuScene extends Phaser.Scene {
     const gameTitle = this.add.text(SCREEN_WIDHT_CENTER, 200, GAME_TITLE_TEXT, { ...TEXT_CONFIG, ...{ fontSize: 110 } })
     gameTitle.setShadow(2, 2, "#c5c6c7", 16, true, true)
     gameTitle.setOrigin(0.5)
-    
+
     const levelSelectButton = this.add.text(SCREEN_WIDHT_CENTER, buttonY, LEVEL_SELECTION_TEXT, TEXT_CONFIG)
     levelSelectButton.setOrigin(0.5)
     levelSelectButton.setInteractive({ cursor: 'pointer' });
-    
+
     levelSelectButton.on('pointerover', () => levelSelectButton.setColor(UiConfig.PASTEL_GREEN_COLOR))
     levelSelectButton.on('pointerout', () => levelSelectButton.setColor(UiConfig.WHITE_COLOR))
     levelSelectButton.on('pointerdown', () => {
@@ -66,25 +66,29 @@ class MenuScene extends Phaser.Scene {
     const endlessModeButton = this.add.text(SCREEN_WIDHT_CENTER, buttonY + buttonSpacingY, ENDLESS_TEXT, TEXT_CONFIG)
     endlessModeButton.setOrigin(0.5)
     endlessModeButton.setInteractive({ cursor: 'pointer' });
-    
+
     endlessModeButton.on('pointerover', () => endlessModeButton.setColor(UiConfig.PASTEL_GREEN_COLOR))
     endlessModeButton.on('pointerout', () => endlessModeButton.setColor(UiConfig.WHITE_COLOR))
     endlessModeButton.on('pointerdown', () => {
+      this.scene.add('PauseMenuScene', PauseMenuScene, false)
+      this.scene.add('EndlessGameScene', EndlessGameScene, false)
       this.scaleTween(
         endlessModeButton,
         1.1,
         400,
-        () => this.scene.start('EndlessGameScene')
+        () => {
+          this.scene.start('EndlessGameScene')
+        }
       )
     })
-    
+
     const exitButton = this.add.text(SCREEN_WIDHT_CENTER, buttonY + buttonSpacingY * 2, EXIT_TEXT, {...TEXT_CONFIG })
     exitButton.setOrigin(0.5)
     exitButton.setInteractive({ cursor: 'pointer' })
 
     exitButton.on('pointerover', () => exitButton.setColor("#e97451"))
     exitButton.on('pointerout', () => exitButton.setColor(UiConfig.WHITE_COLOR))
-    exitButton.on('pointerdown', () => { 
+    exitButton.on('pointerdown', () => {
       this.scaleTween(
         exitButton,
         0.8,

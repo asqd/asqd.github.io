@@ -24,13 +24,23 @@ class UiManager {
 
     this.textGroup.getChildren().forEach((text) => text.setDepth(100))
     this.alignTextUI()
+    const menuButton = this.scene.add.text(620, 5, '☰', { TEXT_CONFIG, ...{ fontSize: 90 } })
+    menuButton.setInteractive({ cursor: 'pointer' })
+
+    menuButton.on('pointerdown', () => {
+      this.scene.scene.pause(this.scene.key).run('PauseMenuScene')
+      this.scene.scene.bringToTop('PauseMenuScene')
+    })
+
+    menuButton.on('pointerover', () => menuButton.setColor(UiConfig.PASTEL_GREEN_COLOR))
+    menuButton.on('pointerout', () => menuButton.setColor(UiConfig.LIGHT_GREY_COLOR))
   }
 
   alignTextUI() {
     Phaser.Actions.GridAlign(this.textGroup.getChildren(), {
       width: 3,
       height: 1,
-      cellWidth: 150 + 100,
+      cellWidth: 150 + 50,
       cellHeight: 80,
       x: 60,
       y: 10
@@ -302,6 +312,11 @@ class UiManager {
 
       return
     }
+
+    const word = this.wordText.text.toLocaleLowerCase()
+    const index = this.scene.wordsOnField.indexOf(word)
+    if (index != -1)
+      this.scene.wordsOnField.splice(index, 1)
 
     // увеличиваем счётчик очков
     this.updateScore()
