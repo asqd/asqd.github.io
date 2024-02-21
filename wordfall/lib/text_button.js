@@ -1,12 +1,13 @@
 class TextButton extends Button {
   /**
    * @param {Phaser.Scene} scene
+   * @param { { fillColor: Phaser.Display.Color?, strokeColor: Phaser.Display.Color? }} style
    */
-  constructor(scene, x, y, width, height, text, fillColor, strokeColor) {
+  constructor(scene, x, y, width, height, text, style = { fillColor: null, strokeColor: null }) {
     super(scene, x, y, width, height)
 
-    this.fillColor = fillColor || LetterBox.getRandomColor()
-    this.strokeColor = strokeColor || this.fillColor
+    this.fillColor = style.fillColor || LetterBox.getRandomColor()
+    this.strokeColor = style.strokeColor || this.fillColor
     this.textContent = text
     this.initContainer()
   }

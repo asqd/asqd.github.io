@@ -3,12 +3,12 @@ Array.prototype.sample = function () {
 }
 
 Array.prototype.shuffle = function () {
-  var a = [...this],
+  let a = [...this],
     n = a.length;
 
-  for (var i = n - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var tmp = a[i];
+  for (let i = n - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    let tmp = a[i];
     a[i] = a[j];
     a[j] = tmp;
   }
@@ -16,12 +16,12 @@ Array.prototype.shuffle = function () {
 }
 
 String.prototype.shuffle = function () {
-  var a = this.split(""),
+  let a = this.split(""),
     n = a.length;
 
-  for (var i = n - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var tmp = a[i];
+  for (let i = n - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    let tmp = a[i];
     a[i] = a[j];
     a[j] = tmp;
   }
@@ -40,7 +40,7 @@ String.prototype.format = function () {
   }
 
   let string = this
-  for (key in args) {
+  for (let key in args) {
     string = string.replace("%{" + key + "}", args[key])
   }
 
@@ -48,18 +48,19 @@ String.prototype.format = function () {
 }
 
 const GAME_STATE_KEY = 'SAVE_STATE';
-var initialGameState = {
+const initialGameState = {
   topScore: 0,
   totalWordsCount: 0,
   longestWordLength: 0,
   levelStats: {},
-  totalPlayTime: 0
+  totalPlayTime: 0,
+  timer: 0
 };
 
 // functions to save and load the State (if you want to persist it)
 
 function loadStateData() {
-  GameState = JSON.parse(localStorage.getItem(GAME_STATE_KEY));
+  return JSON.parse(localStorage.getItem(GAME_STATE_KEY));
 }
 
 function saveStateData(gameState) {

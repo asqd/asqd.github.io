@@ -21,9 +21,6 @@ class GameStat extends Button {
   }
 
   initContainer() {
-    // this.add.rectangle(330, 600, 500, 200, 0xFFFFFF).setOrigin(0.5);
-    // this.add.text(330, 600, TIME_OVER_TEXT, FONT_CONFIG).setOrigin(0.5);
-
     this.shape = this.scene.add.rectangle(0, 0, this.width, this.height, UiConfig.WHITE_OBJECT_COLOR.darken(10).color)
     this.shape.setStrokeStyle(6, UiConfig.WHITE_OBJECT_COLOR.lighten(10).color)
     this.text = this.scene.add.text(

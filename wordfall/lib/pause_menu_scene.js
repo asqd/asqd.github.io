@@ -1,4 +1,4 @@
-PAUSE_MENU_ITEMS = [
+const PAUSE_MENU_ITEMS = [
   "Продолжить",
   "Перезапустить уровень",
   "Подсказка (-N очков)",
@@ -14,7 +14,6 @@ class PauseMenuScene extends Phaser.Scene {
   create() {
     this.textGroup = this.add.group()
     this.add.rectangle(SCREEN_WIDHT_CENTER, 390, 660, 530, 0xbbbbbb).setAlpha(0.3);
-    // const menuBackground = this.add.graphics().fillStyle(0x000000, 0.5).fillRect(30, 150, 650, 540);
 
     PAUSE_MENU_ITEMS.forEach((item) => {
       this.textGroup.add(new TextView(this, 0, 0, item, {

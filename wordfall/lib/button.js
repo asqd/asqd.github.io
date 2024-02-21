@@ -17,9 +17,6 @@ class Button extends Phaser.GameObjects.GameObject {
     return [0, -1]
   }
 
-  initContainer() {
-  }
-
   onPointerDown(callback, context=this) {
     this.container.on("pointerdown", callback, context)
   }

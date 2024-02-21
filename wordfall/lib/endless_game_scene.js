@@ -4,6 +4,7 @@ class EndlessGameScene extends BaseGameScene {
   }
 
   init(_data) {
+    super.init()
     this.wordsCollection = window.wordList
   }
 
@@ -16,8 +17,8 @@ class EndlessGameScene extends BaseGameScene {
     this.gameManager.initLettersSpawn()
   }
 
-  update() {
-    super.update()
+  update(time, delta) {
+    super.update(time, delta)
 
     if (!this.gameOver
       && this.data.values.spawnCount === 0

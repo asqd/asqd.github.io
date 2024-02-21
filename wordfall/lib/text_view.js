@@ -18,9 +18,9 @@ class TextView extends Phaser.GameObjects.Text {
 
   formatTime(seconds) {
     // Minutes
-    var minutes = Math.floor(seconds / 60);
+    let minutes = Math.floor(seconds / 60);
     // Seconds
-    var seconds = seconds % 60;
+    seconds = seconds % 60;
     // Adds left zeros to seconds
     seconds = seconds.toString().padStart(2, '0');
     // Returns formated time

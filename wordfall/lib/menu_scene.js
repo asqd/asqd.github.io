@@ -31,7 +31,6 @@ class MenuScene extends Phaser.Scene {
       { ...UiConfig.UI_FONT_CONFIG, ...{ fontSize: 28 } }
     )
     this.versionText.setOrigin(0.5)
-    this.versionText
   }
 
   preload() {

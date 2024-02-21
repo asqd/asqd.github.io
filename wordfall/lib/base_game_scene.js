@@ -5,7 +5,7 @@ class BaseGameScene extends Phaser.Scene {
   }
 
   preload() {
-    // Cat.loadAssets(this)
+    // implement in children
   }
 
   create() {
@@ -17,26 +17,23 @@ class BaseGameScene extends Phaser.Scene {
       ]
     }
 
-    // Cat.initAnims(this)
-    // this.cat = new Cat(this, 750, 550, 'sitting', 0)
-    // this.cat.setScale(5)
-
     this.gameManager = new GameManager(this)
 
     this.uiManager = new UiManager(this)
     this.uiManager.initUI()
-
-    const timedEvent = this.time.addEvent(
-      {
-        delay: 1000,
-        callback: this.uiManager.updateTimer,
-        callbackScope: this.uiManager,
-        loop: true
-      }
-    )
   }
 
-  update() {
-    // this.cat.update()
+  update(_time, delta) {
+    this.updateTimer(delta)
+  }
+
+  updateTimer(delta) {
+    const state = this.data.get('gameState')
+    state.timer += delta;
+
+    while (state.timer > 1000) {
+      this.uiManager.updateTimer();
+      state.timer -= 1000;
+    }
   }
 }

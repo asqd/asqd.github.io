@@ -43,7 +43,7 @@ class LetterBox extends Phaser.GameObjects.GameObject {
   }
 
   get alpha() {
-    this.shape.alpha
+    return this.shape.alpha
   }
 
   set alpha(value) {

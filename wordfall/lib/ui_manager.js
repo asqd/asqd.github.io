@@ -58,10 +58,12 @@ class UiManager {
     this.timeText.onChangeData(
       'time',
       function () {
-        let time = this.scene.data.get('time')
+        /** @type {TextView} */
+        let textView = this
+        let time = textView.scene.data.get('time')
         if (time > 60)
-          time = this.formatTime(time)
-        this.setText(UiConfig.TIME_TEXT.format({ time: time }))
+          time = textView.formatTime(time)
+        textView.setText(UiConfig.TIME_TEXT.format({ time: time }))
       },
       this.timeText
     )
@@ -142,9 +144,9 @@ class UiManager {
 
   formatTime(seconds) {
     // Minutes
-    var minutes = Math.floor(seconds / 60);
+    let minutes = Math.floor(seconds / 60);
     // Seconds
-    var seconds = seconds % 60;
+    seconds = seconds % 60;
     // Adds left zeros to seconds
     seconds = seconds.toString().padStart(2, '0');
     // Returns formated time
@@ -173,9 +175,6 @@ class UiManager {
   updateScore() {
     this.scene.data.inc('words')
     this.scene.data.values.score += this.wordText.text.length * 100 + 200
-
-    // this.wordsCountText.setText(this.wordsCountTextStr.format({ words: this.scene.data.get('words') }))
-    // this.scoreText.setText(UiConfig.SCORE_TEXT.format({ score: this.scene.data.get('score') }))
   }
 
   clearUsedLetters() {
@@ -291,13 +290,6 @@ class UiManager {
       duration: 200,
       onComplete: () => {
         this.clearWordText()
-        // this.wordText.text = ""
-        // this.wordText.setAlpha(1)
-        // this.wordText.setFontSize(BOTTOM_TEXT_SIZE)
-        // this.fontSize = BOTTOM_TEXT_SIZE
-        // this.scene.letterGroup.children.each((letter) => {
-        //   letter.unSelect()
-        // })
       }
     })
   }

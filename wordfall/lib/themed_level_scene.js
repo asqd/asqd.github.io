@@ -60,13 +60,8 @@ class ThemedLevelScene extends BaseGameScene {
     console.log(this.data.get('gameState'))
   }
 
-  update() {
-    super.update()
-
-    // if (this.data.get('words') > this.data.get('wordsPackCount') * 5) {
-    //   this.data.inc('wordsPackCount')
-    //   this.spawnWords(5)
-    // }
+  update(time, delta) {
+    super.update(time, delta)
 
     if (this.gameOver && !this.lettersDisabled) {
       this.letterGroup.getChildren().forEach((child) => child.container.disableInteractive());
