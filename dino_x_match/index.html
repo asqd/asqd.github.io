@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
+    <style media='screen' type='text/css'>
+        @font-face {
+            font-family: "Silkscreen";
+            src: url('assets/fonts/Silkscreen.ttf');
+        }
+
+        body {
+            padding: 0px;
+            margin: 0px;
+            height: 100svh;
+            max-height: 100svh;
+            overflow: hidden;
+        }
+
+        #game {
+            margin: 0px;
+            padding: 0px;
+            height: 100svh;
+            width: 100vw;
+        }
+    </style>
+    <script src="lib/phaser.min.js"></script>
+    <script src="lib/config.js"></script>
+    <script src="lib/missionsConfig.js"></script>
+    <script src="lib/sameGame.js"></script>
+    <script src="lib/gameManager.js"></script>
+    <script src="lib/missionManager.js"></script>
+    <script src="lib/components/character.js"></script>
+    <script src="lib/components/button.js"></script>
+    <script src="lib/components/iconButton.js"></script>
+    <script src="lib/scenes/menuScene.js"></script>
+    <script src="lib/scenes/gameScene.js"></script>
+    <script src="lib/app.js?version=0.168"></script>
+    <title>Приключения Тотошки</title>
+</head>
+
+<body>
+    <div class="font_preload hidden">
+        <span style="font-family: Silkscreen;"></span>
+    </div>
+    <div id="game"></div>
+</body>
+
+</html>
