@@ -29,3 +29,5 @@ const GAME_OPTIONS = {
   items: 4,
   minimumMatches: 2,
 };
+
+const FONT_OPTIONS = { fontFamily: 'Silkscreen', fontSize: 40, color: "#fff" }

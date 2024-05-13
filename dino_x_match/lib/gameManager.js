@@ -6,6 +6,16 @@ class GameManager {
     this.scene = scene
   }
 
+  static loadItemsCollection(scene, collectionName) {
+    const serializedSet = new Set(JSON.parse(localStorage.getItem(collectionName)))
+    scene.registry.set(collectionName, serializedSet)
+  }
+
+  static saveItemsCollection(scene, collectionName) {
+    const deserializedSet = Array.from(scene.registry.get(collectionName));
+    localStorage.setItem(collectionName, JSON.stringify(deserializedSet))
+  }
+
   tileSelect(pointer) {
     if (!this.canMakeMove(pointer)) return
 

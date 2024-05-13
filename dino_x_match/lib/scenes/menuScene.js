@@ -6,7 +6,7 @@ class MenuScene extends Phaser.Scene {
 
   fadeOutToMode(duration, gameMode) {
     this.cameras.main.fadeOut(duration)
-    this.time.delayedCall(duration, () => this.scene.start('MainGame', { gameMode: gameMode }))
+    this.time.delayedCall(duration, () => this.scene.start('GameScene', { gameMode: gameMode }))
   }
 
   preload() {
