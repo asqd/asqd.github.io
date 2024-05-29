@@ -27,13 +27,17 @@ class CollectionScene extends Phaser.Scene {
 
   preload() {
     this.load.spritesheet(this.collectionName, `assets/sprites/collections/${this.collectionName}.png`, this.frameConfig);
+    this.load.image('bg', `assets/sprites/collection_bg.png`);
     GiftBox.loadAssets(this)
   }
 
   create() {
     this.loadCollection(this.collectionName);
     this.totalPages = Math.ceil(this.items.length / this.totalItemsPerPage);
-
+    this.bg = this.add.image(this.game.config.width / 2, this.game.config.height / 2, 'bg')
+    this.bg.setScale(this.game.config.height / this.bg.height)
+    this.bg.setAlpha(0.8)
+    this.createMenuButton();
     this.createItemList();
     this.createNavigationButtons();
   }
@@ -121,7 +125,7 @@ class CollectionScene extends Phaser.Scene {
     prevButton.setInteractive();
 
     prevButton.on('pointerdown', () => {
-      if (this.currentPage > 1) {
+      if (this.currentPage > 1 && !this.giftBox) {
         this.currentPage--;
         this.scene.restart();
       }
@@ -133,7 +137,7 @@ class CollectionScene extends Phaser.Scene {
     nextButton.setInteractive();
 
     nextButton.on('pointerdown', () => {
-      if (this.currentPage < this.totalPages) {
+      if (this.currentPage < this.totalPages && !this.giftBox) {
         this.currentPage++;
         this.scene.restart();
       }
@@ -147,5 +151,17 @@ class CollectionScene extends Phaser.Scene {
     giftButton.on('pointerdown', () => {
       this.spawnBox()
     }, giftButton);
-}
+  }
+
+  createMenuButton() {
+    const menuX = GAME_OPTIONS.boardOffset.x + GAME_OPTIONS.gemSize * (GAME_OPTIONS.maxColumns - 0.3) 
+
+    this.menuButton = this.add.text(menuX - 10, 20 - 21, '☰', { ...FONT_OPTIONS, fontSize: 80 })
+    this.menuButton.setInteractive({ cursor: 'pointer' })
+
+    this.menuButton.on('pointerdown', () => {
+      this.cameras.main.fadeOut(400)
+      this.time.delayedCall(400, () => this.scene.stop(this.scene.key).start('MenuScene'))
+    })
+  }
 }
