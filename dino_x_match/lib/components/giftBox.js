@@ -17,6 +17,11 @@ class GiftBox extends SpriteContainer {
     this.isOpened = false
   }
 
+  get itemScale() {
+    return COLLECTION_OPTIONS.itemHeight / COLLECTIONS[this.collectionName].frameConfig.frameHeight * 2
+  }
+
+
   initContainer() {
     super.initContainer()
 
@@ -32,7 +37,6 @@ class GiftBox extends SpriteContainer {
     const itemNum = Phaser.Math.RND.between(0, this.collectionSize - 1)
     this.scene.registry.values[this.collectionName].add(itemNum)
     GameManager.saveItemsCollection(this.scene, this.collectionName)
-    // this.scene.unlockedItems.add(itemNum)
     this.itemSprite = this.scene.add.sprite(this.x, this.y, this.collectionName, itemNum)
     this.itemSprite.texture.setFilter(Phaser.Textures.FilterMode.NEAREST)
     this.itemSprite.setScale(0.1)
@@ -48,21 +52,20 @@ class GiftBox extends SpriteContainer {
       onComplete: () => this.sprite.setVisible(false)
     })
 
-    const itemScale = COLLECTION_OPTIONS.itemHeight / COLLECTIONS[this.collectionName].frameConfig.frameHeight * 2
     this.scene.tweens.add({
       targets: this.itemSprite,
-      scale: itemScale,
+      scale: this.itemScale,
       ease: 'power3',
       delay: 200,
       duration: 500
     })
+
     this.itemSprite.setInteractive()
     this.itemSprite.on("pointerdown", () => {
       this.itemSprite.setVisible(false)
       this.scene.giftBox = null
       if (this.scene.scene.key === "CollectionScene")
         this.scene.scene.restart()
-      // this.destroy(true)
     })
   }
 
