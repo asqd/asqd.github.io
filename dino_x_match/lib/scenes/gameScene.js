@@ -31,7 +31,7 @@ class GameScene extends Phaser.Scene {
   }
 
   constructor() {
-    super({ key: 'MainGame' });
+    super({ key: 'GameScene' });
     this.gameOptions = GAME_OPTIONS;
 
     this.gameOptions.gemScale = parseFloat((this.gameOptions.gemSize / this.gameOptions.gemSpriteSize).toFixed(2))

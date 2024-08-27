@@ -40,6 +40,7 @@ class Character extends Phaser.GameObjects.Sprite {
   }
 
   onPointerDown(callback, context = this) {
+    this.container.input.cursor = 'pointer'
     this.container.on("pointerdown", callback, context)
   }
 }
