@@ -7,49 +7,112 @@ class UiManager {
     // this.gameManager = scene.gameManager
 
     this.fontSize = BOTTOM_TEXT_SIZE
-    this.wordsCountTextStr = UiConfig.WORDS_COUNT_TEXT 
+    this.wordsCountTextStr = UiConfig.WORDS_COUNT_TEXT
     if (this.scene.data.get("totalWords") && this.scene.data.get("totalWords") > 0)
       this.wordsCountTextStr = `${this.wordsCountTextStr}/${this.scene.data.get("totalWords")}`
   }
 
   initUI() {
-    this.timeTextInit()
+    this.textGroup = this.scene.add.group()
+
     this.scoreTextInit()
     this.wordsCountTextInit()
+    this.timeTextInit()
     this.wordTextInit()
     this.applyButtonInit()
     this.resetButtonInit()
+
+    this.textGroup.getChildren().forEach((text) => text.setDepth(100))
+    this.alignTextUI()
+    const menuButton = this.scene.add.text(620, 5, '☰', { TEXT_CONFIG, ...{ fontSize: 90 } })
+    menuButton.setInteractive({ cursor: 'pointer' })
+
+    menuButton.on('pointerdown', () => {
+      this.scene.scene.pause(this.scene.key).run('PauseMenuScene')
+      this.scene.scene.bringToTop('PauseMenuScene')
+    })
+
+    menuButton.on('pointerover', () => menuButton.setColor(UiConfig.PASTEL_GREEN_COLOR))
+    menuButton.on('pointerout', () => menuButton.setColor(UiConfig.LIGHT_GREY_COLOR))
+  }
+
+  alignTextUI() {
+    Phaser.Actions.GridAlign(this.textGroup.getChildren(), {
+      width: 3,
+      height: 1,
+      cellWidth: 150 + 50,
+      cellHeight: 80,
+      x: 60,
+      y: 10
+    });
   }
 
   timeTextInit() {
-    this.timeText = this.scene.add.text(
-      UiConfig.UI_X,
-      UiConfig.UI_Y,
+    this.timeText = new TextView(
+      this.scene,
+      0,
+      0,
       UiConfig.TIME_TEXT.format({ time: this.scene.data.get('time') }),
-      UiConfig.UI_FONT_CONFIG
     )
+
+    this.timeText.onChangeData(
+      'time',
+      function () {
+        /** @type {TextView} */
+        let textView = this
+        let time = textView.scene.data.get('time')
+        if (time > 60)
+          time = textView.formatTime(time)
+        textView.setText(UiConfig.TIME_TEXT.format({ time: time }))
+      },
+      this.timeText
+    )
+
+    this.textGroup.add(this.timeText)
   }
   scoreTextInit() {
-    this.scoreText = this.scene.add.text(
-      UiConfig.UI_X,
-      UiConfig.UI_Y + 100,
+    this.scoreText = new TextView(
+      this.scene,
+      UiConfig.BASE_UI_X,
+      UiConfig.BASE_UI_Y,
       UiConfig.SCORE_TEXT.format({ score: this.scene.data.get('score') }),
-      UiConfig.UI_FONT_CONFIG
     )
+
+    this.scoreText.onChangeData(
+      'score',
+      function () {
+        this.setText(UiConfig.SCORE_TEXT.format({ score: this.scene.data.get('score') }))
+      },
+      this.scoreText
+    )
+
+    this.textGroup.add(this.scoreText)
   }
   wordsCountTextInit() {
-    this.wordsCountText = this.scene.add.text(
-      UiConfig.UI_X,
-      UiConfig.UI_Y + 200,
+    this.wordsCountText = new TextView(
+      this.scene,
+      UiConfig.BASE_UI_X,
+      UiConfig.BASE_UI_Y,
       this.wordsCountTextStr.format({ words: this.scene.data.get('words') }),
-      UiConfig.UI_FONT_CONFIG
     )
+
+    this.wordsCountText.setPattern(this.wordsCountTextStr)
+
+    this.wordsCountText.onChangeData(
+      'score',
+      function () {
+        this.setText(this.pattern.format({ words: this.scene.data.get('words') }))
+      },
+      this.wordsCountText
+    )
+
+    this.textGroup.add(this.wordsCountText)
   }
 
   wordTextInit() {
     this.wordText = this.scene.add.text(
-      335,
-      1050,
+      360,
+      1125,
       "",
       { ...FONT_CONFIG, ...{ fontSize: BOTTOM_TEXT_SIZE } }
     )
@@ -57,11 +120,11 @@ class UiManager {
   }
 
   applyButtonInit() {
-    this.wordApplyFrame = this.scene.add.rectangle(495, 1150, 300, 85)
+    this.wordApplyFrame = this.scene.add.rectangle(540, 1230, 350, 85)
     this.wordApplyFrame.setStrokeStyle(4, UiConfig.BLACK_COLOR_HEX)
     // this.wordApplyFrame.setOrigin(0.5, 0)
 
-    this.wordApply = this.scene.add.text(500, 1150, UiConfig.APPLY_ICON, { ...UiConfig.BUTTON_FONT_CONFIG, ...{ color: UiConfig.GREEN_COLOR } })
+    this.wordApply = this.scene.add.text(540, 1230, UiConfig.APPLY_ICON, { ...UiConfig.BUTTON_FONT_CONFIG, ...{ color: UiConfig.GREEN_COLOR } })
     this.wordApply.setOrigin(0.5)
 
     this.wordApplyFrame.setInteractive()
@@ -69,10 +132,10 @@ class UiManager {
   }
 
   resetButtonInit() {
-    this.wordResetFrame = this.scene.add.rectangle(185, 1150, 300, 85)
+    this.wordResetFrame = this.scene.add.rectangle(180, 1230, 350, 85)
     this.wordResetFrame.setStrokeStyle(4, UiConfig.BLACK_COLOR_HEX)
 
-    this.wordReset = this.scene.add.text(185, 1150, UiConfig.CANCEL_ICON, { ...UiConfig.BUTTON_FONT_CONFIG, ...{ color: UiConfig.ROSE_COLOR } })
+    this.wordReset = this.scene.add.text(180, 1230, UiConfig.CANCEL_ICON, { ...UiConfig.BUTTON_FONT_CONFIG, ...{ color: UiConfig.ROSE_COLOR } })
     this.wordReset.setOrigin(0.5)
 
     this.wordResetFrame.setInteractive()
@@ -81,9 +144,9 @@ class UiManager {
 
   formatTime(seconds) {
     // Minutes
-    var minutes = Math.floor(seconds / 60);
+    let minutes = Math.floor(seconds / 60);
     // Seconds
-    var seconds = seconds % 60;
+    seconds = seconds % 60;
     // Adds left zeros to seconds
     seconds = seconds.toString().padStart(2, '0');
     // Returns formated time
@@ -94,13 +157,6 @@ class UiManager {
     if (this.scene.gameOver) return
 
     this.scene.data.inc('time')
-
-    let time = this.scene.data.get('time')
-
-    if (time > 60)
-      time = this.formatTime(time)
-
-    this.timeText.text = UiConfig.TIME_TEXT.format({ time: time })
   }
 
   transitionColor(tween, color_from, color_to, length = 200) {
@@ -118,10 +174,7 @@ class UiManager {
 
   updateScore() {
     this.scene.data.inc('words')
-    this.scene.data.values.score += this.wordText.text.length * 5 + 5
-    
-    this.wordsCountText.setText(this.wordsCountTextStr.format({ words: this.scene.data.get('words') }))
-    this.scoreText.setText(UiConfig.SCORE_TEXT.format({ score: this.scene.data.get('score') }))
+    this.scene.data.values.score += this.wordText.text.length * 100 + 200
   }
 
   clearUsedLetters() {
@@ -237,13 +290,6 @@ class UiManager {
       duration: 200,
       onComplete: () => {
         this.clearWordText()
-        // this.wordText.text = ""
-        // this.wordText.setAlpha(1)
-        // this.wordText.setFontSize(BOTTOM_TEXT_SIZE)
-        // this.fontSize = BOTTOM_TEXT_SIZE
-        this.scene.letterGroup.children.each((letter) => {
-          letter.unSelect()
-        })
       }
     })
   }
@@ -258,6 +304,11 @@ class UiManager {
 
       return
     }
+
+    const word = this.wordText.text.toLocaleLowerCase()
+    const index = this.scene.wordsOnField.indexOf(word)
+    if (index != -1)
+      this.scene.wordsOnField.splice(index, 1)
 
     // увеличиваем счётчик очков
     this.updateScore()
