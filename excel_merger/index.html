@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Объединение Excel файлов</title>
+  <script src="js/xlsx.full.min.js"></script>
+  <style>
+    input {
+      margin-bottom: 10px;
+      margin-right: 10px;
+    }
+
+    button {
+      margin-right: 20px;
+    }
+
+    table,
+    th,
+    td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 3px;
+    }
+
+    table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+
+<body>
+  <p>Объединение Excel файлов</p>
+  <div id="buttons">
+    <input type="file" id="fileInput" multiple accept=".xls,.xlsx,.csv">
+    <button id="mergeButton">Объединить</button>
+  </div>
+  <div id="result"></div>
+<script src="js/script.js"></script>
+</body>
+
+</html>
