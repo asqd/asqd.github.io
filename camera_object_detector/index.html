@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Object Detector
+  </title>
+  <style>
+    .red { background-color: rgb(161, 46, 46);}
+    .green { background-color: rgb(46, 161, 79);}
+    #fill-zone {
+      display: block;
+      height: 480px;
+      width: 640px;
+    }
+    .head {
+      font-size: medium;
+      font-weight: 600;
+      margin: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <p class="head">Поднесите объект к камере</p>
+  <div id="fill-zone" class="red"></div>
+  <video hidden id="video" width="640" height="480" autoplay></video>
+  <canvas hidden id="canvas" width="640" height="480"></canvas>
+  <audio id="sound" src="bar_code_beep.mp3"></audio>
+
+  <script>
+    const DETECTION_FREQ = 800 // ms
+    const RESET_INTERVAL = 2000 // ms
+    const PIXEL_DIFF_THRESHOLD = 100 // порог изменения одного пикселя в rgb
+    // 640*480 = 307200px
+    // 100000 значит, что должна измениться 1/3 изображения
+    const DIFF_THRESHOLD = 100000
+
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const sound = document.getElementById('sound');
+    const fillZone = document.getElementById('fill-zone');
+    
+    let previousFrame = null;
+    let detectionInterval = null;
+    let skipAudio = false;
+    let timer = null
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+
+        startDetection();
+      })
+      .catch(error => console.error('Ошибка доступа к камере:', error));
+
+    function startDetection() {
+      if (detectionInterval) {
+        clearInterval(detectionInterval);
+      }
+
+      detectionInterval = setInterval(detectObjects, DETECTION_FREQ);
+    }
+
+    function detectObjects() {
+      if (timer && Date.now() - timer > RESET_INTERVAL) {
+        timer = null
+        skipAudio = false;
+        fillZone.className = 'red'
+      }
+
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const currentFrame = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+      if (previousFrame) {
+        let differences = 0;
+
+        // rgba = 4
+        for (let i = 0; i < currentFrame.data.length; i += 4) {
+          const r1 = currentFrame.data[i];
+          const g1 = currentFrame.data[i + 1];
+          const b1 = currentFrame.data[i + 2];
+
+          const r2 = previousFrame.data[i];
+          const g2 = previousFrame.data[i + 1];
+          const b2 = previousFrame.data[i + 2];
+
+          const diff = Math.abs(r1 - r2) + Math.abs(g1 - g2) + Math.abs(b1 - b2);
+          if (diff > PIXEL_DIFF_THRESHOLD) differences++;
+        }
+
+        if (differences > DIFF_THRESHOLD) {
+          if (!skipAudio) {
+            sound.currentTime = 0;
+            skipAudio = true;
+            fillZone.className = 'green'
+            timer = Date.now()
+            sound.play();
+          } else {
+            skipAudio = false;
+            fillZone.className = 'red'
+            timer = null
+          }
+        }
+      }
+
+      previousFrame = currentFrame;
+    }
+
+    // чтобы память не утекала, если при закрытии окна detectionInterval не остановится
+    window.addEventListener('beforeunload', () => {
+      if (detectionInterval) {
+        clearInterval(detectionInterval);
+      }
+    });
+  </script>
+</body>
+
+</html>
