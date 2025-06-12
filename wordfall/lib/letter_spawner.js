@@ -8,7 +8,7 @@ class LetterSpawner {
     this.LetterPicker = new LetterPicker(scene, recentlyLetters)
   }
 
-  spawnLetters(letters, initial = false, x, y) {
+  spawnLetters(letters, x, y, initial = false) {
     if (this.gameOver) return
 
     const delay = initial ? INITIAL_LETTER_INTERVAL : LETTER_INTERVAL
@@ -16,6 +16,8 @@ class LetterSpawner {
   }
 
   spawnWord(word, delay, x, y, c) {
+    if (this.gameOver) return
+
     const shuffledWord = word.shuffle()
 
     if (this.recentlyLetters) {
@@ -45,7 +47,7 @@ class LetterSpawner {
     }
   }
 
-  spawnLetter(x = 340, y = 150, r = LETTER_SIZE, color, letter) {
+  spawnLetter(x = 340, y = 150, r = LETTER_SIZE, color = null, letter = null) {
     const letterBox = new LetterBox(this.scene, x, y, r, color, letter)
 
     // вешаем на букву событие на клик
