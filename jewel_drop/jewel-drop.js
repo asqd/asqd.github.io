@@ -4,7 +4,13 @@ class JewelDropGame extends Phaser.Scene {
     }
 
     preload() {
-        this.createCrystalGraphics();
+        // Загрузка спрайтов кристаллов
+        this.load.image('blue', 'assets/gem_octagon_blue.png');
+        this.load.image('green', 'assets/gem_octagon_green.png');
+        this.load.image('yellow', 'assets/gem_octagon_yellow.png');
+        this.load.image('purple', 'assets/gem_octagon_purple.png');
+        this.load.image('red', 'assets/gem_octagon_red.png');
+        this.load.image('star', 'assets/gem_star_yellow.png');
     }
 
     create() {
@@ -64,61 +70,6 @@ class JewelDropGame extends Phaser.Scene {
         this.matter.world.on('collisionstart', this.onCollisionStart, this);
     }
 
-    createCrystalGraphics() {
-        ['blue', 'green', 'yellow', 'purple', 'red', 'star'].forEach(color => {
-            const graphics = this.add.graphics();
-            const colorMap = {
-                'blue': 0x0066cc,
-                'green': 0x00cc66,
-                'yellow': 0xcccc00,
-                'purple': 0x9966cc,
-                'red': 0xcc3333,
-                'star': 0xffdd44
-            };
-
-            graphics.fillStyle(colorMap[color]);
-            graphics.lineStyle(2, 0xffffff, 0.8);
-
-            if (color === 'star') {
-                graphics.beginPath();
-                for (let i = 0; i < 10; i++) {
-                    const angle = (i * Math.PI) / 5;
-                    const radius = i % 2 === 0 ? CRYSTAL_BASE_RADIUS : CRYSTAL_BASE_RADIUS * 0.4;
-                    const x = Math.cos(angle - Math.PI / 2) * radius + CRYSTAL_BASE_RADIUS;
-                    const y = Math.sin(angle - Math.PI / 2) * radius + CRYSTAL_BASE_RADIUS;
-                    if (i === 0) graphics.moveTo(x, y);
-                    else graphics.lineTo(x, y);
-                }
-                graphics.closePath();
-                graphics.fillPath();
-                graphics.strokePath();
-            } else {
-                // Создаем восьмиугольник
-                const centerX = CRYSTAL_BASE_RADIUS;
-                const centerY = CRYSTAL_BASE_RADIUS;
-                const radius = CRYSTAL_BASE_RADIUS;
-                const sides = 8;
-
-                graphics.beginPath();
-                for (let i = 0; i < sides; i++) {
-                    const angle = (i * Math.PI * 2) / sides;
-                    const x = centerX + Math.cos(angle) * radius;
-                    const y = centerY + Math.sin(angle) * radius;
-                    if (i === 0) {
-                        graphics.moveTo(x, y);
-                    } else {
-                        graphics.lineTo(x, y);
-                    }
-                }
-                graphics.closePath();
-                graphics.fillPath();
-                graphics.strokePath();
-            }
-
-            graphics.generateTexture(color, CRYSTAL_BASE_RADIUS * 2, CRYSTAL_BASE_RADIUS * 2);
-            graphics.destroy();
-        });
-    }
 
     createBackground() {
         this.add.rectangle(this.gameWidth / 2, this.gameHeight / 2, this.gameWidth, this.gameHeight, 0x654321);
@@ -217,7 +168,7 @@ class JewelDropGame extends Phaser.Scene {
 
     showStartScreen() {
         this.startBg = this.add.rectangle(this.gameWidth / 2, this.gameHeight / 2, this.gameWidth - 100, 400, 0x000000, 0.9);
-        
+
         this.startTitle = this.add.text(this.gameWidth / 2, this.gameHeight / 2 - 150, 'JEWEL DROP', {
             fontSize: '48px',
             fill: '#ffdd44',
@@ -290,9 +241,8 @@ class JewelDropGame extends Phaser.Scene {
         crystal.setData('isFalling', true);
         crystal.setData('fallSpeed', this.fallSpeed);
 
-        if (size > 1) {
-            crystal.setScale(size);
-        }
+        // Устанавливаем правильный масштаб для спрайтов
+        crystal.setScale(CRYSTAL_SPRITE_SCALE * size);
 
         this.activeCrystal = crystal;
         this.crystals.push(crystal);
@@ -338,13 +288,8 @@ class JewelDropGame extends Phaser.Scene {
         // Удаляем старый sprite
         crystal.destroy();
 
-        // Создаем новый физический кристалл с базовым размером физического тела
+        // Создаем физический кристалл через matter.add.image для правильной связи
         const physicsCrystal = this.matter.add.image(x, y, texture, null, {
-            shape: {
-                type: 'polygon',
-                sides: 8,
-                radius: baseRadius  // всегда базовый размер для физики
-            },
             restitution: 0.1,
             friction: 0.8,
             frictionAir: 0.02,
@@ -352,8 +297,28 @@ class JewelDropGame extends Phaser.Scene {
             label: 'crystal'
         });
 
-        // Устанавливаем визуальный масштаб (физическое тело остается базового размера)
-        physicsCrystal.setScale(size);
+        // Устанавливаем визуальный масштаб спрайта
+        physicsCrystal.setScale(CRYSTAL_SPRITE_SCALE * size);
+
+        // Заменяем физическое тело на правильный размер
+        if (physicsCrystal.body) {
+            this.matter.world.remove(physicsCrystal.body);
+        }
+
+        const newBody = this.matter.add.polygon(x, y, 8, baseRadius * size, {
+            restitution: 0.1,
+            friction: 0.8,
+            frictionAir: 0.02,
+            density: 0.001,
+            label: 'crystal'
+        });
+
+        // Правильно связываем спрайт с новым телом
+        physicsCrystal.body = newBody;
+        newBody.gameObject = physicsCrystal;
+
+        // Синхронизируем позицию
+        this.matter.body.setPosition(newBody, { x: physicsCrystal.x, y: physicsCrystal.y });
 
         // Восстанавливаем все данные
         physicsCrystal.setData('color', color);
@@ -362,7 +327,6 @@ class JewelDropGame extends Phaser.Scene {
         physicsCrystal.setData('size', size);
         physicsCrystal.setData('isFalling', false);
         physicsCrystal.setData('isActive', false);
-        physicsCrystal.setScale(scale);
 
         // Обновляем ссылки в массивах
         const crystalIndex = this.crystals.indexOf(crystal);
@@ -571,7 +535,7 @@ class JewelDropGame extends Phaser.Scene {
                 console.log(`Reducing crystal size from ${currentSize} to ${currentSize - 1}`);
                 const newSize = currentSize - 1;
                 crystal.setData('size', newSize);
-                crystal.setScale(newSize);
+                crystal.setScale(CRYSTAL_SPRITE_SCALE * newSize);
                 points += 5;
 
                 const baseRadius = CRYSTAL_BASE_RADIUS; // базовый радиус
@@ -587,13 +551,8 @@ class JewelDropGame extends Phaser.Scene {
                     }
                 }
 
-                // Создаем новое физическое тело как полноценный физический кристалл
-                const tempCrystal = this.matter.add.image(x, y, crystal.texture.key, null, {
-                    shape: {
-                        type: 'polygon',
-                        sides: 8,
-                        radius: baseRadius
-                    },
+                // Создаем новое физическое тело с правильным размером
+                const newPhysicsBody = this.matter.add.polygon(x, y, 8, baseRadius * newSize, {
                     restitution: 0.1,
                     friction: 0.8,
                     frictionAir: 0.02,
@@ -601,25 +560,21 @@ class JewelDropGame extends Phaser.Scene {
                     label: 'crystal'
                 });
 
-                // Масштабируем новое физическое тело под нужный размер
-                tempCrystal.setScale(newSize);
+                // Правильно связываем кристалл с новым физическим телом
+                crystal.body = newPhysicsBody;
+                newPhysicsBody.gameObject = crystal;
 
-                // Переносим физическое тело на исходный кристалл
-                crystal.body = tempCrystal.body;
-                tempCrystal.body.gameObject = crystal;
-
-                // Удаляем временный объект, оставляя только его физическое тело
-                tempCrystal.body = null; // отсоединяем тело перед удалением
-                tempCrystal.destroy();
+                // Синхронизируем позицию тела с кристаллом
+                this.matter.body.setPosition(newPhysicsBody, { x: crystal.x, y: crystal.y });
 
                 this.tweens.add({
                     targets: crystal,
-                    scaleX: newSize * 1.2,
-                    scaleY: newSize * 1.2,
+                    scaleX: CRYSTAL_SPRITE_SCALE * newSize * 1.02,
+                    scaleY: CRYSTAL_SPRITE_SCALE * newSize * 1.02,
                     duration: 200,
                     yoyo: true,
                     onComplete: () => {
-                        crystal.setScale(newSize);
+                        crystal.setScale(CRYSTAL_SPRITE_SCALE * newSize);
                     }
                 });
             } else {
@@ -637,7 +592,7 @@ class JewelDropGame extends Phaser.Scene {
                 this.tweens.add({
                     targets: crystal,
                     alpha: 0,
-                    scale: 0.5,
+                    scale: CRYSTAL_SPRITE_SCALE * 0.5, //0.5,
                     duration: 300,
                     onComplete: () => {
                         // Безопасно удаляем физическое тело
@@ -929,6 +884,7 @@ class JewelDropGame extends Phaser.Scene {
 const SCREEN_WIDTH = 720;
 const SCREEN_HEIGHT = 1280;
 const CRYSTAL_BASE_RADIUS = 32;
+const CRYSTAL_SPRITE_SCALE = (CRYSTAL_BASE_RADIUS * 2) / 512; // Масштаб для спрайтов 512x512 -> диаметр 64px
 
 const config = {
     type: Phaser.AUTO,
