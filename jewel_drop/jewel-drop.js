@@ -8,8 +8,8 @@ class JewelDropGame extends Phaser.Scene {
     }
 
     create() {
-        this.gameWidth = 800;
-        this.gameHeight = 600;
+        this.gameWidth = SCREEN_WIDTH;
+        this.gameHeight = SCREEN_HEIGHT;
 
         this.score = 0;
         this.stars = 0;
@@ -83,9 +83,9 @@ class JewelDropGame extends Phaser.Scene {
                 graphics.beginPath();
                 for (let i = 0; i < 10; i++) {
                     const angle = (i * Math.PI) / 5;
-                    const radius = i % 2 === 0 ? 15 : 8;
-                    const x = Math.cos(angle - Math.PI / 2) * radius + 15;
-                    const y = Math.sin(angle - Math.PI / 2) * radius + 15;
+                    const radius = i % 2 === 0 ? CRYSTAL_BASE_RADIUS : CRYSTAL_BASE_RADIUS * 0.4;
+                    const x = Math.cos(angle - Math.PI / 2) * radius + CRYSTAL_BASE_RADIUS;
+                    const y = Math.sin(angle - Math.PI / 2) * radius + CRYSTAL_BASE_RADIUS;
                     if (i === 0) graphics.moveTo(x, y);
                     else graphics.lineTo(x, y);
                 }
@@ -94,9 +94,9 @@ class JewelDropGame extends Phaser.Scene {
                 graphics.strokePath();
             } else {
                 // Создаем восьмиугольник
-                const centerX = 15;
-                const centerY = 15;
-                const radius = 15;
+                const centerX = CRYSTAL_BASE_RADIUS;
+                const centerY = CRYSTAL_BASE_RADIUS;
+                const radius = CRYSTAL_BASE_RADIUS;
                 const sides = 8;
 
                 graphics.beginPath();
@@ -115,53 +115,53 @@ class JewelDropGame extends Phaser.Scene {
                 graphics.strokePath();
             }
 
-            graphics.generateTexture(color, 30, 30);
+            graphics.generateTexture(color, CRYSTAL_BASE_RADIUS * 2, CRYSTAL_BASE_RADIUS * 2);
             graphics.destroy();
         });
     }
 
     createBackground() {
-        this.add.rectangle(400, 300, 800, 600, 0x654321);
+        this.add.rectangle(this.gameWidth / 2, this.gameHeight / 2, this.gameWidth, this.gameHeight, 0x654321);
 
-        this.add.text(400, 50, 'JEWEL DROP', {
-            fontSize: '32px',
+        this.add.text(this.gameWidth / 2, 80, 'JEWEL DROP', {
+            fontSize: '42px',
             fill: '#ffdd44',
             fontFamily: 'Arial, sans-serif'
         }).setOrigin(0.5);
     }
 
     createBasket() {
-        const basketHeight = 400;
-        const basketWidth = 200;
-        const basketBottom = 520;
+        const basketHeight = 700;
+        const basketWidth = 450;
+        const basketBottom = this.gameHeight - 200;
         const basketTop = basketBottom - basketHeight;
 
         this.basket = this.add.graphics();
         this.basket.lineStyle(4, 0x8b4513);
         this.basket.strokeRect(-basketWidth/2, -basketHeight, basketWidth, basketHeight);
-        this.basket.x = 400;
+        this.basket.x = this.gameWidth / 2;
         this.basket.y = basketBottom;
 
         this.basketBounds = {
-            left: 400 - basketWidth/2,
-            right: 400 + basketWidth/2,
+            left: this.gameWidth / 2 - basketWidth/2,
+            right: this.gameWidth / 2 + basketWidth/2,
             top: basketTop,
             bottom: basketBottom
         };
 
-        const basketBottomBody = this.matter.add.rectangle(400, basketBottom + 5, basketWidth, 10, {
+        const basketBottomBody = this.matter.add.rectangle(this.gameWidth / 2, basketBottom + 5, basketWidth, 10, {
             isStatic: true,
             label: 'basketBottom',
             render: { fillStyle: 'transparent' }
         });
 
-        const basketLeftWall = this.matter.add.rectangle(400 - basketWidth/2 - 5, basketBottom - basketHeight/2, 10, basketHeight, {
+        const basketLeftWall = this.matter.add.rectangle(this.gameWidth / 2 - basketWidth/2 - 5, basketBottom - basketHeight/2, 10, basketHeight, {
             isStatic: true,
             label: 'basketWall',
             render: { fillStyle: 'transparent' }
         });
 
-        const basketRightWall = this.matter.add.rectangle(400 + basketWidth/2 + 5, basketBottom - basketHeight/2, 10, basketHeight, {
+        const basketRightWall = this.matter.add.rectangle(this.gameWidth / 2 + basketWidth/2 + 5, basketBottom - basketHeight/2, 10, basketHeight, {
             isStatic: true,
             label: 'basketWall',
             render: { fillStyle: 'transparent' }
@@ -169,19 +169,19 @@ class JewelDropGame extends Phaser.Scene {
     }
 
     setupPhysicsWalls() {
-        const ground = this.matter.add.rectangle(400, 590, 800, 20, {
+        const ground = this.matter.add.rectangle(this.gameWidth / 2, this.gameHeight - 10, this.gameWidth, 20, {
             isStatic: true,
             label: 'ground',
             render: { fillStyle: 'transparent' }
         });
 
-        const leftWall = this.matter.add.rectangle(-10, 300, 20, 600, {
+        const leftWall = this.matter.add.rectangle(-10, this.gameHeight / 2, 20, this.gameHeight, {
             isStatic: true,
             label: 'wall',
             render: { fillStyle: 'transparent' }
         });
 
-        const rightWall = this.matter.add.rectangle(810, 300, 20, 600, {
+        const rightWall = this.matter.add.rectangle(this.gameWidth + 10, this.gameHeight / 2, 20, this.gameHeight, {
             isStatic: true,
             label: 'wall',
             render: { fillStyle: 'transparent' }
@@ -189,34 +189,16 @@ class JewelDropGame extends Phaser.Scene {
     }
 
     createUI() {
-        this.scoreText = this.add.text(50, 50, `Score: ${this.score}`, {
-            fontSize: '24px',
-            fill: '#ffffff'
+        this.scoreText = this.add.text(60, 50, `🏅${this.score}`, {
+            fontSize: '40px',
+            fill: '#ffffff',
+            fontFamily: 'Arial, sans-serif'
         });
 
-        this.starsText = this.add.text(50, 80, `Stars: ${this.stars}`, {
-            fontSize: '24px',
-            fill: '#ffdd44'
-        });
-
-        this.controlsText = this.add.text(550, 50, 'Controls:', {
-            fontSize: '18px',
-            fill: '#cccccc'
-        });
-
-        this.moveText = this.add.text(550, 75, '← → Move crystal', {
-            fontSize: '16px',
-            fill: '#ffffff'
-        });
-
-        this.fallText = this.add.text(550, 95, '↓ Fast fall', {
-            fontSize: '16px',
-            fill: '#ffffff'
-        });
-
-        this.shakeText = this.add.text(550, 115, 'Space: Shake basket', {
-            fontSize: '16px',
-            fill: '#ffffff'
+        this.starsText = this.add.text(60, 100, `⭐${this.stars}`, {
+            fontSize: '40px',
+            fill: '#ffdd44',
+            fontFamily: 'Arial, sans-serif'
         });
 
         // Скрываем UI до старта игры
@@ -226,32 +208,49 @@ class JewelDropGame extends Phaser.Scene {
     showGameUI() {
         this.scoreText.setVisible(true);
         this.starsText.setVisible(true);
-        this.controlsText.setVisible(true);
-        this.moveText.setVisible(true);
-        this.fallText.setVisible(true);
-        this.shakeText.setVisible(true);
     }
 
     hideGameUI() {
         this.scoreText.setVisible(false);
         this.starsText.setVisible(false);
-        this.controlsText.setVisible(false);
-        this.moveText.setVisible(false);
-        this.fallText.setVisible(false);
-        this.shakeText.setVisible(false);
     }
 
     showStartScreen() {
-        this.startBg = this.add.rectangle(400, 300, 500, 150, 0x000000, 0.8);
-        this.startTitle = this.add.text(400, 280, 'JEWEL DROP', {
-            fontSize: '36px',
+        this.startBg = this.add.rectangle(this.gameWidth / 2, this.gameHeight / 2, this.gameWidth - 100, 400, 0x000000, 0.9);
+        
+        this.startTitle = this.add.text(this.gameWidth / 2, this.gameHeight / 2 - 150, 'JEWEL DROP', {
+            fontSize: '48px',
             fill: '#ffdd44',
             fontFamily: 'Arial, sans-serif'
         }).setOrigin(0.5);
 
-        this.startText = this.add.text(400, 320, 'Нажмите любую клавишу, чтобы начать игру', {
-            fontSize: '18px',
+        this.controlsTitle = this.add.text(this.gameWidth / 2, this.gameHeight / 2 - 80, 'Управление:', {
+            fontSize: '32px',
             fill: '#ffffff',
+            fontFamily: 'Arial, sans-serif'
+        }).setOrigin(0.5);
+
+        this.moveText = this.add.text(this.gameWidth / 2, this.gameHeight / 2 - 40, '← → Движение кристалла', {
+            fontSize: '24px',
+            fill: '#cccccc',
+            fontFamily: 'Arial, sans-serif'
+        }).setOrigin(0.5);
+
+        this.fallText = this.add.text(this.gameWidth / 2, this.gameHeight / 2 - 10, '↓ Быстрое падение', {
+            fontSize: '24px',
+            fill: '#cccccc',
+            fontFamily: 'Arial, sans-serif'
+        }).setOrigin(0.5);
+
+        this.shakeText = this.add.text(this.gameWidth / 2, this.gameHeight / 2 + 20, 'Пробел: Встряхнуть корзину', {
+            fontSize: '24px',
+            fill: '#cccccc',
+            fontFamily: 'Arial, sans-serif'
+        }).setOrigin(0.5);
+
+        this.startText = this.add.text(this.gameWidth / 2, this.gameHeight / 2 + 80, 'Нажмите любую клавишу, чтобы начать игру', {
+            fontSize: '28px',
+            fill: '#ffdd44',
             fontFamily: 'Arial, sans-serif'
         }).setOrigin(0.5);
     }
@@ -259,6 +258,10 @@ class JewelDropGame extends Phaser.Scene {
     hideStartScreen() {
         if (this.startBg) this.startBg.destroy();
         if (this.startTitle) this.startTitle.destroy();
+        if (this.controlsTitle) this.controlsTitle.destroy();
+        if (this.moveText) this.moveText.destroy();
+        if (this.fallText) this.fallText.destroy();
+        if (this.shakeText) this.shakeText.destroy();
         if (this.startText) this.startText.destroy();
     }
 
@@ -277,7 +280,7 @@ class JewelDropGame extends Phaser.Scene {
             size = Phaser.Math.Between(2, 4);
         }
 
-        const crystal = this.add.image(400, 0, color);
+        const crystal = this.add.image(this.gameWidth / 2, 0, color);
 
         crystal.setData('color', color);
         crystal.setData('isStar', isStarCrystal);
@@ -319,7 +322,7 @@ class JewelDropGame extends Phaser.Scene {
         if (crystal.body) return;
 
         const size = crystal.getData('size') || 1;
-        const baseRadius = 15; // базовый радиус физического тела
+        const baseRadius = CRYSTAL_BASE_RADIUS; // базовый радиус физического тела
         const x = crystal.x;
         const y = crystal.y;
         const texture = crystal.texture.key;
@@ -412,7 +415,7 @@ class JewelDropGame extends Phaser.Scene {
 
         // Создаем физический кристалл прямо на дне корзины
         const size = crystal.getData('size') || 1;
-        const radius = 15 * size;
+        const radius = CRYSTAL_BASE_RADIUS * size;
         crystal.y = this.basketBounds.bottom - radius;
         const physicsCrystal = this.activatePhysicsForCrystal(crystal);
 
@@ -520,13 +523,13 @@ class JewelDropGame extends Phaser.Scene {
                     // Алгоритм: для определения соприкосновения двух кристаллов
                     // рассчитываем сумму их радиусов + небольшой зазор.
                     // Это обеспечивает корректную работу с кристаллами разных размеров:
-                    // - маленький + маленький (1+1): 15+15+5 = 35px
-                    // - маленький + большой (1+3): 15+45+5 = 65px
-                    // - большой + большой (4+4): 60+60+5 = 125px
+                    // - маленький + маленький (1+1): 32+32+5 = 69px
+                    // - маленький + большой (1+3): 32+96+5 = 133px
+                    // - большой + большой (4+4): 128+128+5 = 261px
                     const currentSize = current.getData('size') || 1;
                     const otherSize = other.getData('size') || 1;
-                    const currentRadius = 15 * currentSize;
-                    const otherRadius = 15 * otherSize;
+                    const currentRadius = CRYSTAL_BASE_RADIUS * currentSize;
+                    const otherRadius = CRYSTAL_BASE_RADIUS * otherSize;
                     const threshold = currentRadius + otherRadius + 5; // +5 для небольшого зазора
 
                     console.log(`  - Crystal ${color} at (${other.x.toFixed(1)}, ${other.y.toFixed(1)}): distance=${distance.toFixed(1)}, threshold=${threshold.toFixed(1)}`);
@@ -571,7 +574,7 @@ class JewelDropGame extends Phaser.Scene {
                 crystal.setScale(newSize);
                 points += 5;
 
-                const baseRadius = 15; // базовый радиус
+                const baseRadius = CRYSTAL_BASE_RADIUS; // базовый радиус
                 const x = crystal.x;
                 const y = crystal.y;
 
@@ -766,8 +769,8 @@ class JewelDropGame extends Phaser.Scene {
     }
 
     updateUI() {
-        this.scoreText.setText(`Score: ${this.score}`);
-        this.starsText.setText(`Stars: ${this.stars}`);
+        this.scoreText.setText(`🏅${this.score}`);
+        this.starsText.setText(`⭐${this.stars}`);
     }
 
     endGame() {
@@ -777,21 +780,28 @@ class JewelDropGame extends Phaser.Scene {
         if (this.matchCheckTimer) this.matchCheckTimer.remove();
         if (this.checkMatchesTimer) this.checkMatchesTimer.remove();
 
-        this.gameOverBg = this.add.rectangle(400, 300, 400, 250, 0x000000, 0.8);
-        this.gameOverTitle = this.add.text(400, 260, 'GAME OVER', {
-            fontSize: '32px',
+        this.gameOverBg = this.add.rectangle(this.gameWidth / 2, this.gameHeight / 2, this.gameWidth - 100, 300, 0x000000, 0.9);
+        this.gameOverTitle = this.add.text(this.gameWidth / 2, this.gameHeight / 2 - 80, 'ИГРА ОКОНЧЕНА', {
+            fontSize: '42px',
             fill: '#ff0000',
             fontFamily: 'Arial, sans-serif'
         }).setOrigin(0.5);
 
-        this.finalScoreText = this.add.text(400, 300, `Final Score: ${this.score}`, {
-            fontSize: '24px',
-            fill: '#ffffff'
+        this.finalScoreText = this.add.text(this.gameWidth / 2, this.gameHeight / 2 - 20, `🏅 Итоговый счет: ${this.score}`, {
+            fontSize: '32px',
+            fill: '#ffffff',
+            fontFamily: 'Arial, sans-serif'
+        }).setOrigin(0.5);
+
+        this.finalStarsText = this.add.text(this.gameWidth / 2, this.gameHeight / 2 + 20, `⭐ Звезды: ${this.stars}`, {
+            fontSize: '32px',
+            fill: '#ffdd44',
+            fontFamily: 'Arial, sans-serif'
         }).setOrigin(0.5);
 
         this.time.delayedCall(500, () => {
-            this.restartText = this.add.text(400, 340, 'Нажмите любую клавишу, чтобы перезапустить', {
-                fontSize: '16px',
+            this.restartText = this.add.text(this.gameWidth / 2, this.gameHeight / 2 + 80, 'Нажмите любую клавишу, чтобы перезапустить', {
+                fontSize: '24px',
                 fill: '#ffffff',
                 fontFamily: 'Arial, sans-serif'
             }).setOrigin(0.5);
@@ -830,11 +840,11 @@ class JewelDropGame extends Phaser.Scene {
                         }
                         this.crystals.splice(i, 1);
                     }
-                } else if (crystal.y > 650) {
+                } else if (crystal.y > this.gameHeight + 50) {
                     crystal.destroy();
                     this.crystals.splice(i, 1);
                 }
-            } else if (crystal.body && crystal.y > 650) {
+            } else if (crystal.body && crystal.y > this.gameHeight + 50) {
                 this.matter.world.remove(crystal.body);
                 crystal.destroy();
                 this.crystals.splice(i, 1);
@@ -844,7 +854,7 @@ class JewelDropGame extends Phaser.Scene {
         // Плавное управление активным кристаллом
         if (this.activeCrystal && !this.gameOver && this.activeCrystal.getData('isFalling')) {
             const size = this.activeCrystal.getData('size') || 1;
-            const radius = 15 * size;
+            const radius = CRYSTAL_BASE_RADIUS * size;
 
             // Границы движения с учетом размера кристалла и границ корзины
             const leftBound = this.basketBounds.left + radius;
@@ -868,11 +878,11 @@ class JewelDropGame extends Phaser.Scene {
         if (this.basketCrystals.length === 0) return false;
 
         const fallingSize = fallingCrystal.getData('size') || 1;
-        const fallingRadius = 15 * fallingSize;
+        const fallingRadius = CRYSTAL_BASE_RADIUS * fallingSize;
 
         for (let basketCrystal of this.basketCrystals) {
             const basketSize = basketCrystal.getData('size') || 1;
-            const basketRadius = 15 * basketSize;
+            const basketRadius = CRYSTAL_BASE_RADIUS * basketSize;
 
             const distance = Phaser.Math.Distance.Between(
                 fallingCrystal.x, fallingCrystal.y,
@@ -916,10 +926,19 @@ class JewelDropGame extends Phaser.Scene {
     }
 }
 
+const SCREEN_WIDTH = 720;
+const SCREEN_HEIGHT = 1280;
+const CRYSTAL_BASE_RADIUS = 32;
+
 const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: SCREEN_WIDTH,
+        height: SCREEN_HEIGHT,
+        parent: 'game',
+    },
     backgroundColor: '#2c1810',
     scene: JewelDropGame,
     physics: {
@@ -930,6 +949,7 @@ const config = {
             enableSleeping: false
         }
     },
+    roundPixels: true,
 };
 
 const game = new Phaser.Game(config);

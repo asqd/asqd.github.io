@@ -1,29 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
+    <script src="lib/phaser.min.js"></script>
+    <script src="jewel-drop.js"></script>
     <title>Jewel Drop</title>
-    <style>
+    <style media='screen' type='text/css'>
         body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #2c1810;
-            font-family: Arial, sans-serif;
+            padding: 0px;
+            margin: 0px;
+            height: 100svh;
+            max-height: 100svh;
+            overflow: hidden;
         }
-        canvas {
-            border: 3px solid #8b4513;
-            border-radius: 8px;
-            image-rendering: pixelated;
+
+        #game {
+            margin: 0px;
+            padding: 0px;
+            height: 100svh;
+            width: 100vw;
         }
     </style>
 </head>
 <body>
-    <script src="lib/phaser.min.js"></script>
-    <script src="jewel-drop.js"></script>
+    <div id="game"></div>
 </body>
 </html>
