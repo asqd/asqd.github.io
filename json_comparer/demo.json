@@ -1,0 +1,31 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com",
+      "active": true,
+      "profile": {
+        "age": 30,
+        "city": "New York",
+        "preferences": ["email", "sms"]
+      }
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith", 
+      "email": "jane@example.com",
+      "active": false,
+      "profile": {
+        "age": 25,
+        "city": "Los Angeles",
+        "preferences": ["email"]
+      }
+    }
+  ],
+  "config": {
+    "api_version": "1.0",
+    "debug": false,
+    "features": ["authentication", "payments"]
+  }
+}

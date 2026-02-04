@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Compare - Сравнение JSON файлов</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>JSON Compare</h1>
+            <p>Сравнивает два JSON объекта</p>
+        </header>
+
+        <div class="controls">
+            <div class="buttons">
+                <button id="compareBtn" class="btn-primary">Сравнить JSON</button>
+                <button id="clearBtn" class="btn-secondary">Очистить</button>
+                <button id="formatBtn" class="btn-secondary">Форматировать JSON</button>
+                <button id="loadFileBtn" class="btn-secondary">Загрузить файлы</button>
+            </div>
+            <input type="file" id="fileInput" multiple accept=".json" style="display: none;">
+        </div>
+
+        <div class="json-panels">
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <h3>JSON 1</h3>
+                        <span class="file-name" id="fileName1"></span>
+                    </div>
+                    <span class="status" id="status1"></span>
+                </div>
+                <textarea id="json1" placeholder="Первый JSON"></textarea>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <h3>JSON 2</h3>
+                        <span class="file-name" id="fileName2"></span>
+                    </div>
+                    <span class="status" id="status2"></span>
+                </div>
+                <textarea id="json2" placeholder="Второй JSON"></textarea>
+            </div>
+        </div>
+
+        <div class="results" id="results" style="display: none;">
+            <div class="results-header">
+                <h3>Результаты сравнения</h3>
+                <div class="result-stats">
+                    <span id="statsText"></span>
+                    <button id="downloadBtn" class="btn-download">Скачать</button>
+                </div>
+            </div>
+            <div class="results-content">
+                <div class="result-panel">
+                    <h4>Различия</h4>
+                    <div id="differences" class="diff-content"></div>
+                </div>
+                <div class="result-panel">
+                    <h4>Только в JSON 1</h4>
+                    <div id="onlyInFirst" class="diff-content"></div>
+                </div>
+                <div class="result-panel">
+                    <h4>Только в JSON 2</h4>
+                    <div id="onlyInSecond" class="diff-content"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="examples">
+            <h3>Примеры</h3>
+            <div class="example-buttons">
+                <button class="btn-example" onclick="loadExample('simple')">Простой пример</button>
+                <button class="btn-example" onclick="loadExample('nested')">Вложенные объекты</button>
+                <button class="btn-example" onclick="loadExample('arrays')">Массивы</button>
+                <button class="btn-example" onclick="loadExample('complex')">Сложная структура</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>JSON Compare Tool | Создано для сравнения JSON</p>
+    </footer>
+
+    <script src="json-compare.js"></script>
+</body>
+</html>

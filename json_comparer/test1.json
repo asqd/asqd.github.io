@@ -1,0 +1,13 @@
+{
+  "amount": 1,
+  "price": 100,
+  "user": {
+    "name": "John",
+    "age": 30
+  },
+  "items": [
+    {"id": 1, "name": "apple"},
+    {"id": 2, "name": "banana"}
+  ],
+  "active": true
+}

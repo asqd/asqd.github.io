@@ -1,0 +1,37 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "John Smith",
+      "email": "john.smith@example.com",
+      "active": true,
+      "profile": {
+        "age": 31,
+        "city": "Boston",
+        "preferences": ["email", "sms", "push"],
+        "timezone": "EST"
+      }
+    },
+    {
+      "id": 3,
+      "name": "Bob Johnson",
+      "email": "bob@example.com", 
+      "active": true,
+      "profile": {
+        "age": 28,
+        "city": "Chicago",
+        "preferences": ["email", "push"]
+      }
+    }
+  ],
+  "config": {
+    "api_version": "2.0",
+    "debug": true,
+    "features": ["authentication", "payments", "analytics"],
+    "maintenance_mode": false
+  },
+  "metadata": {
+    "version": "2.1.0",
+    "updated_at": "2025-01-18T12:00:00Z"
+  }
+}
