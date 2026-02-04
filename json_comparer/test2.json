@@ -1,0 +1,15 @@
+{
+  "amount": 2,
+  "price": 100,
+  "user": {
+    "name": "John",
+    "age": 25,
+    "city": "Moscow"
+  },
+  "items": [
+    {"id": 1, "name": "apple"},
+    {"id": 3, "name": "orange"}
+  ],
+  "active": true,
+  "new_field": "test"
+}

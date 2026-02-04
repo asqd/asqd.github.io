@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест отображения имен файлов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .test-panel {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .panel-header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .panel-title {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .panel-header h3 {
+            font-size: 1.2rem;
+            color: #495057;
+            margin: 0;
+        }
+        
+        .file-name {
+            font-size: 0.85rem;
+            color: #6c757d;
+            font-weight: 500;
+            font-style: italic;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            position: relative;
+            padding-left: 18px;
+        }
+        
+        .file-name:before {
+            content: "📄";
+            position: absolute;
+            left: 0;
+            font-size: 0.8rem;
+        }
+        
+        .status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status.valid {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .demo-content {
+            padding: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Тест отображения имен файлов</h1>
+    
+    <div class="test-panel">
+        <div class="panel-header">
+            <div class="panel-title">
+                <h3>JSON 1</h3>
+                <span class="file-name">demo-users-data.json</span>
+            </div>
+            <span class="status valid">Валидный</span>
+        </div>
+        <div class="demo-content">
+            Содержимое панели 1 с именем файла
+        </div>
+    </div>
+    
+    <div class="test-panel">
+        <div class="panel-header">
+            <div class="panel-title">
+                <h3>JSON 2</h3>
+                <span class="file-name">very-long-filename-for-testing-ellipsis-behavior.json</span>
+            </div>
+            <span class="status valid">Валидный</span>
+        </div>
+        <div class="demo-content">
+            Содержимое панели 2 с длинным именем файла (должно обрезаться)
+        </div>
+    </div>
+    
+    <div class="test-panel">
+        <div class="panel-header">
+            <div class="panel-title">
+                <h3>JSON 3</h3>
+                <span class="file-name"></span>
+            </div>
+            <span class="status valid">Валидный</span>
+        </div>
+        <div class="demo-content">
+            Содержимое панели 3 без имени файла (имя должно быть скрыто)
+        </div>
+    </div>
+    
+    <p><a href="index.html">← Вернуться к основному приложению</a></p>
+</body>
+</html>
