@@ -10,6 +10,10 @@ class UiConfig {
     return "#000000"
   }
 
+  static get WHITE_COLOR() {
+    return "#ffffff"
+  }
+
   static get BLACK_COLOR_HEX() {
     return Phaser.Display.Color.HexStringToColor(UiConfig.BLACK_COLOR).color
   }
@@ -42,12 +46,28 @@ class UiConfig {
     return Phaser.Display.Color.HexStringToColor(UiConfig.GREY_COLOR).color
   }
 
+  static get WHITE_OBJECT_COLOR() {
+    return Phaser.Display.Color.HexStringToColor(UiConfig.WHITE_COLOR)
+  }
+
+  static get WHITE_COLOR_HEX() {
+    return Phaser.Display.Color.HexStringToColor(UiConfig.WHITE_COLOR).color
+  }
+
   static get APPLY_ICON() {
     return "✓"
   }
 
   static get CANCEL_ICON() {
     return "✗"
+  }
+
+  static get BASE_UI_X() {
+    return 0
+  }
+
+  static get BASE_UI_Y() {
+    return 0
   }
 
   static get UI_X() {
@@ -59,13 +79,13 @@ class UiConfig {
   }
 
   static get TIME_TEXT() {
-    return "Time \n %{time}"
+    return "Время \n %{time}"
   }
 
   static get SCORE_TEXT() {
-    return "Score \n %{score}"
+    return "Очки \n %{score}"
   }
   static get WORDS_COUNT_TEXT() {
-    return "Words \n %{words}"
+    return "Слова \n %{words}"
   }
 }

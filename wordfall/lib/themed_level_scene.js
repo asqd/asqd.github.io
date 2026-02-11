@@ -8,6 +8,7 @@ class ThemedLevelScene extends BaseGameScene {
   }
 
   init(data) {
+    super.init(data)
     this.collectionId = data.collectionId
     this.collection = LEVEL_LIST[data.collectionId]
     this.wordsCollection = [...window[this.collection.wordList]]
@@ -16,37 +17,51 @@ class ThemedLevelScene extends BaseGameScene {
     this.data.set({ totalWords: this.collection.wordsLimit})
     this.data.set({ wordsPackCount: 1 })
 
+    // Список слов для уровня,
+    // из него случайным образом будут выбираться слова
     this.currentCollection = this.wordsCollection
+    // Список слов на игровом поле. Нужен для подсказок
+    this.wordsOnField = []
+    // spawn new word after player complete any one
+    this.data.events.on(
+      'changedata',
+      (_gameObject, key, _value) => {
+        if (key === 'words') {
+          this.spawnWords(1)
+        }
+      }
+    )
   }
 
   spawnWords(n=8) {
     this.currentCollection = this.currentCollection.shuffle()
     const words = this.currentCollection.splice(0, n)
+    let sumTimeShift = 0
 
+    this.wordsOnField.push(...words)
     console.log(words);
-    words.forEach((word, i) => {
-      const timeShift = i * INITIAL_LETTER_INTERVAL * 4
+    console.log(this.wordsOnField);
+    words.forEach((word) => {
+      const timeShift = INITIAL_LETTER_INTERVAL * word.length
       this.time.delayedCall(
-        timeShift,
+        sumTimeShift,
         this.gameManager.LetterSpawner.spawnWord,
         [word, INITIAL_LETTER_INTERVAL, null, null, LetterBox.getRandomColor()],
         this.gameManager.LetterSpawner
       )
+      sumTimeShift += timeShift
     })
   }
   create() {
     super.create()
-
+    // пример элемента использования статистики
+    // new GameStat(this, 350, 600, 600, 400, `${TIME_OVER_TEXT}\n слов 5 \n очков `)
     this.spawnWords()
+    console.log(this.data.get('gameState'))
   }
 
-  update() {
-    super.update()
-
-    if (this.data.get('words') > this.data.get('wordsPackCount') * 5) {
-      this.data.inc('wordsPackCount')
-      this.spawnWords(5)
-    }
+  update(time, delta) {
+    super.update(time, delta)
 
     if (this.gameOver && !this.lettersDisabled) {
       this.letterGroup.getChildren().forEach((child) => child.container.disableInteractive());

@@ -30,26 +30,45 @@ class GameManager {
   }
 
   drawWordField() {
-    this.wordField = new Phaser.Geom.Rectangle(30, 1000, 620, 200);
+    this.wordField = new Phaser.Geom.Rectangle(0, 1075, 720, 230);
 
     this.graphics = this.scene.add.graphics(GameManager.graphicConfig);
     this.graphics.fillRectShape(this.wordField);
   }
 
   initBackgroundZone() {
-    this.zone = this.scene.add.rectangle(340, 545, 620, 920)
+    this.zone = this.scene.add.rectangle(360, 590, 720, 980)
     this.zone.setFillStyle(0x808080, 0.5)
   }
 
+  
   initBounds() {  
-    const pLineLeft = this.scene.add.rectangle(45, 545, 30, 920, GameManager.greyColor);
-    this.scene.matter.add.gameObject(pLineLeft, GameManager.matterStaticConfig)
-    
-    const pLineBottom = this.scene.add.rectangle(340, 1000, 600, 30, GameManager.greyColor);
-    this.scene.matter.add.gameObject(pLineBottom, GameManager.matterStaticConfig)
-    
-    const pLineRight = this.scene.add.rectangle(635, 545, 30, 920, GameManager.greyColor);
-    this.scene.matter.add.gameObject(pLineRight, GameManager.matterStaticConfig)
+    const bounds = {
+      left: {
+        x: 5,
+        y: 590,
+        width: 10,
+        height: 980
+      },
+      right: {
+        x: 715,
+        y: 590,
+        width: 10,
+        height: 980
+      },
+      bottom: {
+        x: 360,
+        y: 1075,
+        width: 730,
+        height: 20
+      }
+    }
+    const extract = (obj) => Object.entries(obj).slice(0, 4).map((entry) => entry[1])
+
+    console.log(extract(bounds.left));
+    this.pLineLeft = new Bound(this.scene, ...extract(bounds.left))
+    this.pLineBottom = new Bound(this.scene, ...extract(bounds.bottom))
+    this.pLineRight = new Bound(this.scene, ...extract(bounds.right))
 
     this.initBackgroundZone()
     this.drawWordField()
@@ -74,6 +93,6 @@ class GameManager {
 
   initLettersSpawn(n = 25) {
     const letters = this.LetterPicker.pickLetters(n).join("")
-    this.LetterSpawner.spawnLetters(letters, true, null, SPAWN_Y + 100)
+    this.LetterSpawner.spawnLetters(letters, null, SPAWN_Y, true)
   }
 }

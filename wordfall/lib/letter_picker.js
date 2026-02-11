@@ -33,7 +33,7 @@ class LetterPicker {
   pickLetter() {
     return this.minValueKey(
       this.slice(
-        this.coeffVairations,
+        this.coeffVairations(),
         ...(CHARACTERS).split('').filter(
           (char) => !this.letterRecentlyCheck(char)
         )
