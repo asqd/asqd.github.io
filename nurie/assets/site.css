@@ -1,0 +1,102 @@
+/* Сайт игры Nurie: те же бумага, чернила и печать, что в игре. */
+@font-face { font-family: "Alice"; font-weight: 400; font-display: swap; src: url("alice-cyrillic-400-normal.woff2") format("woff2"); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "Alice"; font-weight: 400; font-display: swap; src: url("alice-latin-400-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Nunito"; font-weight: 600; font-display: swap; src: url("nunito-cyrillic-600-normal.woff2") format("woff2"); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "Nunito"; font-weight: 600; font-display: swap; src: url("nunito-latin-600-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Nunito"; font-weight: 800; font-display: swap; src: url("nunito-cyrillic-800-normal.woff2") format("woff2"); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "Nunito"; font-weight: 800; font-display: swap; src: url("nunito-latin-800-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+:root {
+  --paper: #F6F5F1; --cell: #FFFFFF; --ink: #2C3757; --ink-2: #4B5B88; --soft: #6E7690;
+  --rule: rgba(44, 55, 87, .14); --chip: rgba(44, 55, 87, .06); --seal: #C8372D;
+  --shadow: 0 10px 30px -18px rgba(44, 55, 87, .55);
+  --f-display: "Alice", Georgia, serif; --f-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --paper: #17131F; --cell: #221C30; --ink: #EDE7FF; --ink-2: #B9AEE0; --soft: #9A92B5; --rule: rgba(237, 231, 255, .14); --chip: rgba(237, 231, 255, .07); --seal: #E0503F; --shadow: 0 10px 30px -18px rgba(0, 0, 0, .8); }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 600 17px/1.55 var(--f-body);
+}
+a { color: var(--ink-2); text-underline-offset: 3px; }
+a:hover { color: var(--ink); }
+img { display: block; max-width: 100%; }
+.wrap { width: min(1040px, 100%); margin: 0 auto; padding: 0 20px; }
+h1, h2 { font-family: var(--f-display); font-weight: 400; line-height: 1.12; margin: 0; letter-spacing: -.005em; }
+
+/* шапка */
+.hero { padding: 56px 0 28px; display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
+.brand { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+.brand img { width: 64px; height: 64px; border-radius: 16px; box-shadow: var(--shadow); }
+.brand span { font: 800 15px/1 var(--f-body); letter-spacing: .14em; text-transform: uppercase; color: var(--soft); }
+.hero h1 { font-size: clamp(40px, 6.4vw, 66px); }
+.hero h1 em { font-style: normal; color: var(--seal); }
+.lead { margin: 18px 0 0; font-size: 19px; color: var(--ink-2); max-width: 32em; }
+.cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 22px; border-radius: 16px; font: 800 16px/1 var(--f-body); text-decoration: none; }
+.btn.primary { background: var(--ink); color: var(--paper); }
+.btn.primary:hover { color: var(--paper); filter: brightness(1.15); }
+.btn.soon { background: var(--chip); color: var(--soft); cursor: default; }
+.btn small { font-weight: 700; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+
+/* мини-кроссворд в шапке */
+.try { justify-self: center; padding: 22px; border-radius: 26px; background: var(--cell); box-shadow: var(--shadow); text-align: center; }
+.try p { margin: 0 0 12px; font: 800 13px/1.3 var(--f-body); letter-spacing: .12em; text-transform: uppercase; color: var(--soft); }
+.nono { display: grid; grid-template-columns: auto repeat(5, 44px); grid-template-rows: auto repeat(5, 44px); gap: 3px; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+.nono .clue { display: flex; align-items: flex-end; justify-content: center; gap: 2px; font: 800 15px/1.15 var(--f-body); color: var(--ink-2); }
+.nono .clue.row { flex-direction: row; align-items: center; justify-content: flex-end; padding-right: 8px; gap: 6px; }
+.nono .clue.col { flex-direction: column; align-items: center; padding-bottom: 6px; }
+.nono .clue i { font-style: normal; }
+.nono .clue.done { color: var(--soft); opacity: .5; }
+.nono button { width: 44px; height: 44px; padding: 0; border: 1.5px solid var(--rule); border-radius: 8px; background: var(--paper); cursor: pointer; transition: background .12s, transform .12s; }
+.nono button.on { background: var(--ink); border-color: var(--ink); }
+.nono button:active { transform: scale(.94); }
+.nono.solved button.on { background: var(--seal); border-color: var(--seal); }
+.nono .corner { grid-column: 1; grid-row: 1; }
+.try .hint { margin: 12px 0 0; min-height: 1.4em; font: 700 14px/1.4 var(--f-body); color: var(--soft); text-transform: none; letter-spacing: 0; }
+
+/* скриншоты */
+.shots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 28px 0 8px; }
+.shots img { width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); background: var(--cell); }
+
+/* что есть в игре */
+section { padding: 40px 0 8px; }
+section > h2 { font-size: clamp(30px, 4.4vw, 42px); margin-bottom: 22px; }
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.feature { padding: 20px 22px; border-radius: 20px; background: var(--cell); box-shadow: 0 0 0 1px var(--rule); }
+.feature b { display: block; margin-bottom: 6px; font-size: 18px; font-weight: 800; }
+.feature p { margin: 0; color: var(--soft); font-size: 15.5px; }
+
+/* подвал */
+footer { margin-top: 48px; padding: 28px 0 40px; border-top: 1px solid var(--rule); color: var(--soft); font-size: 15px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px; }
+footer p { margin: 0; }
+
+/* текстовые страницы: политика */
+.doc { width: min(760px, 100%); margin: 0 auto; padding: 40px 20px 0; }
+.doc .back { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 26px; text-decoration: none; font-weight: 800; }
+.doc .back img { width: 36px; height: 36px; border-radius: 10px; }
+.doc h1 { font-size: clamp(32px, 5vw, 46px); margin-bottom: 8px; }
+.doc .date { margin: 0 0 28px; color: var(--soft); }
+.doc h2 { font-size: 26px; margin: 34px 0 10px; }
+.doc p, .doc li { color: var(--ink); }
+.doc ul { padding-left: 1.2em; }
+.doc li { margin: 4px 0; }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; padding-top: 36px; gap: 32px; }
+  .try { justify-self: stretch; }
+  .nono { justify-content: center; }
+  .shots { grid-template-columns: repeat(4, 62%); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 14px; margin: 0 -20px; padding-left: 20px; padding-right: 20px; scrollbar-width: none; }
+  .shots img { scroll-snap-align: center; }
+  .features { grid-template-columns: 1fr; }
+}
+@media (max-width: 400px) {
+  .nono { grid-template-columns: auto repeat(5, 40px); grid-template-rows: auto repeat(5, 40px); }
+  .nono button { width: 40px; height: 40px; }
+}
+@media (prefers-reduced-motion: reduce) { .nono button { transition: none; } }

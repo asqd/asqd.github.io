@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nurie — японские кроссворды</title>
+  <meta name="description" content="Японские кроссворды для телефона: 227 картинок от 5×5 до 30×30, новый узор каждый день, удобное управление и свой редактор.">
+  <meta name="theme-color" content="#F6F5F1">
+  <link rel="icon" type="image/png" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <meta property="og:title" content="Nurie — японские кроссворды">
+  <meta property="og:description" content="227 картинок от 5×5 до 30×30, узор дня и удобное управление на телефоне.">
+  <meta property="og:image" content="https://asqd.github.io/nurie/assets/og.png">
+  <meta property="og:url" content="https://asqd.github.io/nurie/">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <div>
+        <div class="brand"><img src="assets/mark.svg" alt="" width="64" height="64"><span>Nurie</span></div>
+        <h1>Числа подскажут, <em>где&nbsp;закрасить</em></h1>
+        <p class="lead">Японские кроссворды для телефона. По числам у строк и столбцов клетка за клеткой проявляется картинка — котик, Фудзи, паровозик или ночной город. Угадывать не придётся: каждый кроссворд решается логикой.</p>
+        <div class="cta">
+          <a class="btn primary" href="https://nurie.81-29-147-11.sslip.io:8443/">Играть в браузере</a>
+          <span class="btn soon">RuStore <small>скоро</small></span>
+        </div>
+      </div>
+
+      <div class="try" aria-label="Мини-кроссворд 5 на 5">
+        <p>Попробуйте: 5 × 5</p>
+        <div class="nono" id="nono"></div>
+        <p class="hint" id="hint" aria-live="polite">Нажимайте на клетки</p>
+      </div>
+    </header>
+
+    <div class="shots">
+      <img src="assets/mobile-1-classic.webp" alt="Кроссворд 20×20 посреди решения" width="540" height="960" loading="lazy">
+      <img src="assets/mobile-2-album.webp" alt="Альбом с решёнными картинками" width="540" height="960" loading="lazy">
+      <img src="assets/mobile-3-giant.webp" alt="Большое поле с лупой" width="540" height="960" loading="lazy">
+      <img src="assets/mobile-4-themes.webp" alt="Три темы оформления" width="540" height="960" loading="lazy">
+    </div>
+
+    <section>
+      <h2>Что внутри</h2>
+      <div class="features">
+        <div class="feature"><b>227 картинок</b><p>Пять глав: от разминки 5×5 до гигантов 30×30. Внутри главы — от лёгких к сложным.</p></div>
+        <div class="feature"><b>Узор дня</b><p>Каждый день новый, у всех один и тот же. Серия дней подряд и архив пропущенных.</p></div>
+        <div class="feature"><b>Удобно пальцем</b><p>Протяжка по линии, счётчик клеток, лупа и карта на больших полях, крестовина для точного курсора.</p></div>
+        <div class="feature"><b>«Пробую» и проверка</b><p>Смелые предположения можно принять или стереть. Проверка ошибок со штрафом ко времени — по желанию.</p></div>
+        <div class="feature"><b>Три темы</b><p>Светлая бумага, тетрадь в клетку с печатью после решения и ночной экран в пикселях.</p></div>
+        <div class="feature"><b>Свои кроссворды</b><p>Нарисуйте картинку в редакторе — игра сразу покажет, решается ли она логикой.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>© 2026 Константин Ермольчев · <a href="mailto:asqd@mail.ru">asqd@mail.ru</a></p>
+      <p><a href="privacy/">Политика конфиденциальности</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Мини-кроссворд: сердечко 5×5. Решили — клетки краснеют, как печать.
+    (function () {
+      var sol = ['.#.#.', '#####', '#####', '.###.', '..#..'];
+      var n = 5, on = [], el = document.getElementById('nono'), hint = document.getElementById('hint');
+      function runs(line) { var r = [], k = 0; for (var i = 0; i <= line.length; i++) { if (i < line.length && line[i]) k++; else if (k) { r.push(k); k = 0; } } return r.length ? r : [0]; }
+      var want = sol.map(function (r) { return r.split('').map(function (c) { return c === '#'; }); });
+      var rowClue = want.map(runs), colClue = [];
+      for (var j = 0; j < n; j++) colClue.push(runs(want.map(function (r) { return r[j]; })));
+      var corner = document.createElement('span'); corner.className = 'corner'; el.appendChild(corner);
+      var cols = colClue.map(function (c, j) { var s = document.createElement('span'); s.className = 'clue col'; s.style.gridColumn = j + 2; s.style.gridRow = 1; s.innerHTML = c.map(function (v) { return '<i>' + v + '</i>'; }).join(''); el.appendChild(s); return s; });
+      var rows = [], cells = [];
+      for (var i = 0; i < n; i++) {
+        var s = document.createElement('span'); s.className = 'clue row'; s.style.gridRow = i + 2; s.style.gridColumn = 1;
+        s.textContent = rowClue[i].join(' '); el.appendChild(s); rows.push(s); on.push([]);
+        for (var j2 = 0; j2 < n; j2++) {
+          var b = document.createElement('button'); b.type = 'button'; b.style.gridRow = i + 2; b.style.gridColumn = j2 + 2;
+          b.setAttribute('aria-label', 'Строка ' + (i + 1) + ', столбец ' + (j2 + 1)); b.setAttribute('aria-pressed', 'false');
+          b.onclick = (function (i, j) { return function () { toggle(i, j); }; })(i, j2);
+          el.appendChild(b); on[i].push(false); cells.push(b);
+        }
+      }
+      function same(a, b) { return a.join() === b.join(); }
+      function toggle(i, j) {
+        if (el.classList.contains('solved')) return;
+        on[i][j] = !on[i][j];
+        var b = cells[i * n + j]; b.classList.toggle('on', on[i][j]); b.setAttribute('aria-pressed', String(on[i][j]));
+        var done = true;
+        for (var k = 0; k < n; k++) {
+          var r = same(runs(on[k]), rowClue[k]), c = same(runs(on.map(function (x) { return x[k]; })), colClue[k]);
+          rows[k].classList.toggle('done', r); cols[k].classList.toggle('done', c);
+          done = done && r && c;
+        }
+        if (done) { el.classList.add('solved'); hint.textContent = 'Сердце! В игре таких картинок 227'; }
+        else hint.textContent = 'Числа — сколько клеток закрашено подряд';
+      }
+    })();
+  </script>
+</body>
+</html>
