@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Котонадзор: головоломка про котов и рыбок</title>
+  <meta name="description" content="Логическая головоломка про котов и рыбок: поверни каждого кота к его рыбке так, чтобы взгляды не пересекались. 1000 уровней и новая головоломка каждый день.">
+  <meta name="theme-color" content="#ffe8d4">
+  <link rel="canonical" href="https://asqd.github.io/fishy-eyes/">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preload" href="assets/nunito-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <meta property="og:title" content="Котонадзор: головоломка про котов и рыбок">
+  <meta property="og:description" content="Поверни каждого кота к его рыбке. 1000 уровней и новая головоломка каждый день.">
+  <meta property="og:image" content="https://asqd.github.io/fishy-eyes/assets/og.jpg">
+  <meta property="og:url" content="https://asqd.github.io/fishy-eyes/">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <div>
+        <div class="brand">
+          <img src="assets/icon-192.png" alt="" width="64" height="64">
+          <div><span class="logo">Кото<span>надзор</span></span><small>Fishy Eyes</small></div>
+        </div>
+        <h1>Поверни каждого кота <em>к&nbsp;его рыбке</em></h1>
+        <p class="lead">Логическая головоломка про котов и рыбок. Кот смотрит прямо перед собой и видит первое, что стоит у него на пути. Разверни котов так, чтобы у каждого была своя рыбка, а взгляды не пересекались. Угадывать не придётся: у каждого уровня одно решение, и к нему ведут рассуждения.</p>
+        <div class="cta">
+          <span class="btn soon">RuStore <small>скоро</small></span>
+        </div>
+      </div>
+
+      <div class="try" id="try">
+        <p>Попробуйте сами</p>
+        <div class="demo" id="demo" aria-label="Пример головоломки 4 на 4"></div>
+        <p class="hint" id="hint" aria-live="polite">Нажимайте на котов, чтобы развернуть их</p>
+      </div>
+    </header>
+
+    <div class="shots">
+      <img src="assets/mobile-1-classic.webp" alt="Уровень 70: коты смотрят на рыбок, по взглядам идут следы лапок" width="540" height="960" loading="lazy">
+      <img src="assets/mobile-2-mirrors.webp" alt="Уровень с зеркалами и упрямыми котами" width="540" height="960" loading="lazy">
+      <img src="assets/mobile-3-daily.webp" alt="Календарь ежедневных заданий и серия дней подряд" width="540" height="960" loading="lazy">
+      <img src="assets/mobile-4-menu.webp" alt="Главное меню игры" width="540" height="960" loading="lazy">
+    </div>
+
+    <section>
+      <h2>Правила</h2>
+      <ol class="rules">
+        <li>Поверни каждого кота к его рыбке.</li>
+        <li>Одну рыбку стережёт один кот.</li>
+        <li>Сквозь коробки и чужие головы не видно.</li>
+        <li>Взгляды не пересекаются.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Что внутри</h2>
+      <div class="features">
+        <div class="feature"><b>1000 уровней</b><p>От маленьких полей 5×5 до больших 9×9, от простых к трудным. Открываются по порядку.</p></div>
+        <div class="feature"><b>Задание дня</b><p>Каждый день новая головоломка, у всех одна и та же. Календарь, серия дней подряд и пропущенные дни.</p></div>
+        <div class="feature"><b>Зеркала и упрямые коты</b><p>Чем дальше, тем хитрее: зеркала поворачивают взгляд, а упрямого кота не развернуть.</p></div>
+        <div class="feature"><b>Случайный уровень</b><p>Выберите размер поля и сложность, и игра сразу даст новую головоломку.</p></div>
+        <div class="feature"><b>Пометки и подсказки</b><p>Отмечайте, куда кот точно не смотрит. Три подсказки на уровень, если застряли.</p></div>
+        <div class="feature"><b>Без интернета</b><p>Уровни и задания дня уже внутри игры, сеть для них не нужна.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>© 2026 Константин Ермольчев · <a href="mailto:asqd@mail.ru">asqd@mail.ru</a></p>
+      <p><a href="privacy/">Политика конфиденциальности</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Живой пример 4×4: нажатие разворачивает кота (спит → вверх → вправо → вниз → влево → спит).
+    // Без правила «взгляды не пересекаются» решений несколько, с ним одно.
+    (function () {
+      var MAP = ['....', 'C.F.', 'FC.F', 'CFCB'];
+      var FURS = [{ id: 0, tile: '#ffd3ad', edge: '#f0ae78' }, { id: 3, tile: '#cfeafc', edge: '#9fd0f2' },
+                  { id: 4, tile: '#d3f3df', edge: '#9fdcb8' }, { id: 1, tile: '#e4e2f3', edge: '#c3bfe0' }];
+      var DIRS = ['up', 'right', 'down', 'left'], DX = [0, 1, 0, -1], DY = [-1, 0, 1, 0], W = 4, H = 4;
+      var grid = MAP.join(''), cats = [], dirs = [], cells = [];
+      var demo = document.getElementById('demo'), hint = document.getElementById('hint'), card = document.getElementById('try');
+      for (var i = 0; i < grid.length; i++) {
+        var ch = grid[i], el;
+        if (ch === 'C') {
+          var k = cats.length, fur = FURS[k];
+          el = document.createElement('button'); el.type = 'button';
+          el.style.setProperty('--tile', fur.tile); el.style.setProperty('--tile-edge', fur.edge);
+          el.onclick = (function (k) { return function () { if (card.classList.contains('solved')) return; dirs[k] = dirs[k] === 3 ? -1 : dirs[k] + 1; draw(); }; })(k);
+          cats.push(i); dirs.push(-1);
+        } else el = document.createElement('div');
+        el.className = 'c' + (ch === 'F' ? ' fish' : '');
+        el.innerHTML = ch === 'F' ? '<img src="assets/fish.webp" alt="Рыбка">' : ch === 'B' ? '<img src="assets/box.webp" alt="Коробка">' : ch === 'C' ? '<img alt="">' : '';
+        demo.appendChild(el); cells.push(el);
+      }
+      function look(k) {
+        var x = cats[k] % W, y = (cats[k] / W) | 0, d = dirs[k], path = [];
+        for (;;) {
+          x += DX[d]; y += DY[d];
+          if (x < 0 || y < 0 || x >= W || y >= H) return { hit: -1, path: path };
+          var j = y * W + x;
+          if (grid[j] === '.') { path.push(j); continue; }
+          return { hit: grid[j] === 'F' ? j : -1, path: path };
+        }
+      }
+      function draw() {
+        var seen = {}, used = {}, blind = false, cross = false, all = true;
+        demo.querySelectorAll('.paw').forEach(function (p) { p.remove(); });
+        cells.forEach(function (c) { c.classList.remove('cross', 'happy', 'twice', 'blind'); });
+        cats.forEach(function (ci, k) {
+          var img = cells[ci].querySelector('img'), fur = FURS[k].id;
+          img.src = 'assets/cat' + fur + '-' + (dirs[k] < 0 ? 'sleep' : DIRS[dirs[k]]) + '.webp';
+          img.alt = dirs[k] < 0 ? 'Кот спит' : 'Кот смотрит ' + ['вверх', 'вправо', 'вниз', 'влево'][dirs[k]];
+          if (dirs[k] < 0) { all = false; return; }
+          var t = look(k);
+          if (t.hit < 0) { blind = true; all = false; cells[ci].classList.add('blind'); }
+          else seen[t.hit] = (seen[t.hit] || 0) + 1;
+          t.path.forEach(function (j) {
+            used[j] = (used[j] || 0) + 1;
+            if (used[j] > 1) { cross = true; cells[j].classList.add('cross'); return; }
+            var p = document.createElement('img'); p.className = 'paw'; p.src = 'assets/paw.webp'; p.alt = '';
+            p.style.transform = 'rotate(' + dirs[k] * 90 + 'deg)'; cells[j].appendChild(p);
+          });
+        });
+        var twice = false;
+        Object.keys(seen).forEach(function (j) {
+          var c = cells[j], n = seen[j];
+          c.classList.add(n === 1 ? 'happy' : 'twice'); if (n > 1) twice = true;
+          c.querySelector('img').src = n === 1 ? 'assets/fish-happy.webp' : 'assets/fish.webp';
+        });
+        cells.forEach(function (c, j) { if (grid[j] === 'F' && !seen[j]) c.querySelector('img').src = 'assets/fish.webp'; });
+        var solved = all && !cross && !twice && Object.keys(seen).length === cats.length;
+        card.classList.toggle('solved', solved);
+        hint.textContent = solved ? 'Все коты при деле! В игре таких уровней тысяча.'
+          : cross ? 'Взгляды не должны пересекаться.'
+          : twice ? 'Одну рыбку стережёт один кот.'
+          : blind ? 'Этот кот не видит рыбку. Сквозь коробки и чужие головы не видно.'
+          : 'Нажимайте на котов, чтобы развернуть их';
+      }
+      draw();
+    })();
+  </script>
+</body>
+</html>

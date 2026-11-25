@@ -1,0 +1,115 @@
+/* Сайт игры «Котонадзор»: те же персиковый фон, конфетные плитки и котики, что в игре. */
+@font-face { font-family: "Nunito"; font-weight: 600 900; font-display: swap; src: url("nunito-cyrillic.woff2") format("woff2"); unicode-range: U+0401, U+0410-044F, U+0451, U+2116; }
+@font-face { font-family: "Nunito"; font-weight: 600 900; font-display: swap; src: url("nunito-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+2013-2014, U+2018-201E, U+2026, U+2212; }
+
+:root {
+  color-scheme: light;
+  --ink: #5a3a2a; --ink-soft: #9a7462; --edge: #f3d9c2; --card: #fffaf3;
+  --orange: #ff9d4d; --orange-dark: #e07325; --pink: #ff7d9c; --pink-dark: #e05679;
+  --mint: #67d4a4; --mint-dark: #3cae7e; --sky: #6cc2f5; --lilac: #b69cf2;
+  --shadow: 0 14px 30px rgba(170, 90, 120, .2);
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; color: var(--ink); font: 700 17px/1.55 "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: linear-gradient(170deg, #ffe8d4 0%, #ffe1e6 45%, #f1e0ff 100%) fixed #ffe8d4;
+}
+body::before {
+  content: ""; position: fixed; inset: -40%; z-index: -1; pointer-events: none;
+  background: url("paw.webp") 0 0 / 64px 64px repeat; opacity: .045; transform: rotate(-14deg);
+}
+a { color: var(--orange-dark); text-underline-offset: 3px; }
+a:hover { color: var(--pink-dark); }
+img { display: block; max-width: 100%; }
+.wrap { width: min(1040px, 100%); margin: 0 auto; padding: 0 20px; }
+h1, h2 { font-weight: 900; line-height: 1.12; margin: 0; }
+
+/* логотип как в игре: белые буквы в рыжей обводке */
+.logo { font-weight: 900; line-height: 1; white-space: nowrap; color: #fff; -webkit-text-stroke: 8px var(--orange-dark); paint-order: stroke fill; text-shadow: 0 5px 0 #c85e17; }
+.logo span { color: #ffe27a; }
+
+/* шапка */
+.hero { padding: 48px 0 24px; display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
+.brand { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
+.brand img { width: 64px; height: 64px; border-radius: 18px; box-shadow: var(--shadow); }
+.brand .logo { font-size: 34px; }
+.brand small { display: block; margin-top: 8px; font-size: 13px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: var(--pink-dark); }
+.hero h1 { font-size: clamp(36px, 5.6vw, 58px); }
+.hero h1 em { font-style: normal; color: var(--orange-dark); }
+.lead { margin: 18px 0 0; font-size: 19px; color: var(--ink-soft); max-width: 32em; }
+.cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 22px; border-radius: 18px; font-size: 16px; font-weight: 900; line-height: 1; text-decoration: none; }
+.btn.soon { background: #fff; color: var(--ink-soft); box-shadow: 0 4px 0 var(--edge); cursor: default; }
+.btn small { font-weight: 800; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--pink-dark); }
+
+/* живой пример в шапке */
+.try { justify-self: center; width: min(100%, 360px); padding: 20px; border-radius: 28px; background: var(--card); box-shadow: 0 0 0 4px #fff, 0 7px 0 4px var(--edge), var(--shadow); text-align: center; }
+.try > p { margin: 0 0 14px; font-size: 13px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+.demo { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+.demo .c { position: relative; aspect-ratio: 1; border-radius: 14px; background: #fff3e6; box-shadow: inset 0 -4px 0 #f6e2cf; }
+.demo .c > img { position: absolute; inset: 8%; width: 84%; height: 84%; object-fit: contain; }
+.demo .c.cross { box-shadow: inset 0 0 0 3px var(--pink), inset 0 -4px 0 #f6e2cf; }
+.demo .c > img.paw { inset: auto; left: 31%; top: 31%; width: 38%; height: 38%; opacity: .85; }
+.demo button.c { border: 0; padding: 0; cursor: pointer; background: var(--tile); box-shadow: inset 0 -5px 0 var(--tile-edge); transition: transform .1s; }
+.demo button.c:active { transform: scale(.94); }
+.demo button.c.blind > img { filter: grayscale(.6); opacity: .75; }
+.demo .fish.happy > img { animation: bob 1.8s ease-in-out infinite; }
+.demo .fish.twice > img { animation: shake .5s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(-3px) rotate(-3deg); } }
+@keyframes shake { 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
+.try .hint { margin: 14px 0 0; min-height: 3em; text-wrap: balance; font-size: 15px; line-height: 1.4; color: var(--ink-soft); text-transform: none; letter-spacing: 0; }
+.try.solved .hint { color: var(--mint-dark); }
+
+/* скриншоты */
+.shots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 28px 0 8px; }
+.shots img { width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 22px; box-shadow: var(--shadow); background: #fff; }
+
+section { padding: 44px 0 8px; }
+section > h2 { font-size: clamp(28px, 4vw, 40px); margin-bottom: 22px; }
+
+/* правила */
+.rules { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 0; padding: 0; list-style: none; counter-reset: r; }
+.rules li { counter-increment: r; padding: 18px 20px; border-radius: 22px; background: #fff; box-shadow: 0 4px 0 var(--edge); font-size: 17px; line-height: 1.35; }
+.rules li::before { content: counter(r); display: grid; place-items: center; width: 34px; height: 34px; margin-bottom: 10px; border-radius: 11px; background: var(--orange); color: #fff; box-shadow: 0 3px 0 var(--orange-dark); }
+
+/* что есть в игре */
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.feature { padding: 20px 22px; border-radius: 22px; background: rgba(255, 255, 255, .78); box-shadow: 0 0 0 1px rgba(224, 115, 37, .12); }
+.feature b { display: block; margin-bottom: 6px; font-size: 19px; font-weight: 900; }
+.feature p { margin: 0; color: var(--ink-soft); font-size: 15.5px; }
+
+/* подвал */
+footer { margin-top: 52px; padding: 28px 0 40px; border-top: 1px solid rgba(224, 115, 37, .18); color: var(--ink-soft); font-size: 15px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px; }
+footer p { margin: 0; }
+
+/* текстовые страницы: политика */
+.doc { width: min(760px, 100%); margin: 0 auto; padding: 40px 20px 0; }
+.doc .back { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 26px; text-decoration: none; font-weight: 900; }
+.doc .back img { width: 36px; height: 36px; border-radius: 10px; }
+.doc h1 { font-size: clamp(30px, 5vw, 44px); margin-bottom: 8px; }
+.doc .date { margin: 0 0 28px; color: var(--ink-soft); }
+.doc h2 { font-size: 24px; margin: 34px 0 10px; }
+.doc p, .doc li { font-weight: 600; }
+.doc ul { padding-left: 1.2em; }
+.doc li { margin: 4px 0; }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; padding-top: 32px; gap: 32px; }
+  .try { justify-self: stretch; width: 100%; max-width: 420px; margin: 0 auto; }
+  .shots { grid-template-columns: repeat(4, 62%); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 14px; margin: 0 -20px; padding-left: 20px; padding-right: 20px; scrollbar-width: none; }
+  .shots img { scroll-snap-align: center; }
+  .rules { grid-template-columns: 1fr 1fr; }
+  .features { grid-template-columns: 1fr; }
+}
+@media (max-width: 400px) {
+  .brand .logo { font-size: 28px; -webkit-text-stroke-width: 7px; }
+  .rules { grid-template-columns: 1fr; gap: 10px; }
+  .rules li { display: flex; align-items: center; gap: 14px; padding: 14px 16px; }
+  .rules li::before { flex: none; margin-bottom: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo .fish.happy > img, .demo .fish.twice > img { animation: none; }
+}
